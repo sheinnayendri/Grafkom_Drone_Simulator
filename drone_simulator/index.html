@@ -18,6 +18,7 @@
 
     <script>
 
+    var player = { height:1.0}
     var renderer,
     	scene,
     	camera,
@@ -28,15 +29,24 @@
       canvas: myCanvas, 
       antialias: true
     });
-    renderer.setClearColor(0xffffff);
+    renderer.setClearColor(0x55e7ff);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
     //CAMERA
-    camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    camera.position.set(0, 20, -50);
+    camera.lookAt(new THREE.Vector3(0,0,0)); 
 
     //SCENE
     scene = new THREE.Scene();
+
+    //GROUND PLANE
+    var planeGeometry = new THREE.PlaneGeometry(100,100,100,100); 
+    var planeMaterial = new THREE.MeshBasicMaterial({color: 0x2a6002, wireframe:false}); 
+    plane = new THREE.Mesh(planeGeometry,planeMaterial);
+    plane.rotation.x -= Math.PI / 2;
+    scene.add( plane );
 
     //LIGHTS
     var light = new THREE.AmbientLight(0xffffff, 0.5);
@@ -45,22 +55,80 @@
     var light2 = new THREE.PointLight(0xffffff, 0.5);
     scene.add(light2);
   
+    //FOG
+    scene.fog=new THREE.FogExp2( 0xffffff, 0.01 );
+
     var loader = new THREE.GLTFLoader();
 
-    loader.load('objects/gltf/apple_tree.gltf', handle_load);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree);
+    loader.load('objects/glb/tree_sheinna1.glb', handle_tree2);
+    loader.load('objects/glb/tree_sheinna2.glb', handle_tree3);
+    loader.load('objects/apple_tree/scene.gltf', handle_tree4);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree5);
+    loader.load('objects/simple_tree/scene.gltf', handle_tree6);
+    loader.load('objects/spruce_tree/scene.gltf', handle_tree7);
+    loader.load('objects/spruce_tree2/scene.gltf', handle_tree8);
+    loader.load('objects/bench/scene.gltf', handle_bench);
+    loader.load('objects/rocks/scene.gltf', handle_rocks);
+    // loader.load('objects/cloud/scene.gltf', handle_cloud);
 
-    var mesh;
+    var mesh, mesh2, mesh3, mesh4, mesh5, mesh6, mesh7, mesh8, bench_mesh, cloud_mesh, rocks_mesh;
 
-    function handle_load(gltf) {
-
+    function handle_load(gltf, x, y, z, sc, mesh) {
         console.log(gltf);
         mesh = gltf.scene;
         console.log(mesh.children[0]);
         mesh.children[0].material = new THREE.MeshLambertMaterial();
+        mesh.scale.set(sc, sc, sc);    
+        mesh.position.z = z;
+        mesh.position.x = x;
+        mesh.position.y = y;
 		scene.add( mesh );
-        mesh.position.z = -25;
     }
 
+    function handle_tree(gltf) {
+        handle_load(gltf, -5, -0.3, -20, 0.7, mesh);
+    }
+
+    function handle_tree2(gltf) {
+        handle_load(gltf, +1, +0, -20, 1, mesh2);
+    }
+
+    function handle_tree3(gltf) {
+        handle_load(gltf, +5, +0, -20, 1, mesh3);
+    }
+
+    function handle_tree4(gltf) {
+        handle_load(gltf, -5, +0, -18, 1, mesh4);
+    }
+
+    function handle_tree5(gltf) {
+        handle_load(gltf, +20, +0, -20, 0.7, mesh5);
+    }
+
+    function handle_tree6(gltf) {
+        handle_load(gltf, +25, +0, -20, 0.3, mesh6);
+    }
+    
+    function handle_tree7(gltf) {
+        handle_load(gltf, -10, +0, -20, 0.7, mesh7);
+    } 
+
+    function handle_tree8(gltf) {
+        handle_load(gltf, -15, +0, -20, 2, mesh8);
+    }
+
+    function handle_bench(gltf) {
+        handle_load(gltf, +15, +0.5, -20, 1, bench_mesh);
+    }
+
+    function handle_cloud(gltf) {
+        handle_load(gltf, +20, +0, -100, 1, cloud_mesh);
+    }
+
+    function handle_rocks(gltf) {
+        handle_load(gltf, -20, +0, -20, 1, rocks_mesh);
+    }
 
     //RENDER LOOP
     render();
@@ -71,20 +139,13 @@
     function render() {
 
         delta += 0.1;
-
-        if (mesh) {
-        
-            mesh.rotation.y += 0.01;
-
-            //animation mesh
-            // mesh.morphTargetInfluences[ 0 ] = Math.sin(delta) * 20.0;
-        }
-
+        // if (mesh) mesh.rotation.y += 0.01;
+        // if (mesh2) mesh2.rotation.y += 0.01;
+        // if (mesh3) mesh3.rotation.y += 0.01;
+        // if (bench_mesh) bench_mesh.rotation.y += 0.01;
     	renderer.render(scene, camera);
-
     	requestAnimationFrame(render);
     }
-
     </script>
 </body>
 </html>
