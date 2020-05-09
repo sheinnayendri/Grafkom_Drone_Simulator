@@ -70,11 +70,19 @@
     loader.load('objects/spruce_tree2/scene.gltf', handle_tree8);
     loader.load('objects/bench/scene.gltf', handle_bench);
     loader.load('objects/rocks/scene.gltf', handle_rocks);
-    // loader.load('objects/cloud/scene.gltf', handle_cloud);
+    loader.load('objects/cloud/scene.gltf', handle_cloud);
+    loader.load('objects/yulia/store.glb', handle_build1);
+    loader.load('objects/yulia/building.glb', handle_build2);
+    loader.load('objects/yulia/Apartment.glb', handle_build3);
+    loader.load('objects/yulia/building2.glb', handle_build4);
+    //gamau muncul sediih
+    loader.load('objects/yulia/police.glb', handle_build5);
+    loader.load('objects/yulia/post.glb', handle_build6);
+    loader.load('objects/yulia/fire_station.glb', handle_build7);
 
     var mesh, mesh2, mesh3, mesh4, mesh5, mesh6, mesh7, mesh8, bench_mesh, cloud_mesh, rocks_mesh;
 
-    function handle_load(gltf, x, y, z, sc, mesh) {
+    function handle_load(gltf, x, y, z,sc, mesh) {
         console.log(gltf);
         mesh = gltf.scene;
         console.log(mesh.children[0]);
@@ -83,6 +91,20 @@
         mesh.position.z = z;
         mesh.position.x = x;
         mesh.position.y = y;
+		scene.add( mesh );
+    }
+
+    function handle_load2(gltf, x, y, z,xr, yr, sc, mesh) {
+        console.log(gltf);
+        mesh = gltf.scene;
+        console.log(mesh.children[0]);
+        mesh.children[0].material = new THREE.MeshLambertMaterial();
+        mesh.scale.set(sc, sc, sc);    
+        mesh.position.z = z;
+        mesh.position.x = x;
+        mesh.position.y = y;
+        mesh.rotation.x = xr;
+        mesh.rotation.y = yr;
 		scene.add( mesh );
     }
 
@@ -129,6 +151,37 @@
     function handle_rocks(gltf) {
         handle_load(gltf, -20, +0, -20, 1, rocks_mesh);
     }
+
+    function handle_build1(gltf) {
+        handle_load2(gltf, -10, +0.1, -10, 0, 1.6, 0.22, mesh);
+    }
+
+    function handle_build2(gltf) {
+        handle_load2(gltf, -20, 0, -10, 0, 1.6,  2, mesh);
+    }
+
+    function handle_build3(gltf) {
+        handle_load(gltf, -30, 0, -10, 0.00005, mesh);
+    }
+
+    function handle_build4(gltf) {
+        handle_load(gltf, 0, -0.3, -10, 0.015, mesh);
+    }
+
+    function handle_build5(gltf) {
+        handle_load2(gltf, 0, 0, -10, 0, 0,  10000, mesh);
+    }
+
+    function handle_build6(gltf) {
+        handle_load2(gltf, 20, 0, -10, 0, 0, 1, mesh);
+    }
+
+    function handle_build7(gltf) {
+        handle_load2(gltf, 25, 0, -10, 0, 0,  1, mesh);
+    }
+
+
+
 
     //RENDER LOOP
     render();
