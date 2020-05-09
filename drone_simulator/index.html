@@ -75,6 +75,11 @@
     loader.load('objects/yulia/building.glb', handle_build2);
     loader.load('objects/yulia/Apartment.glb', handle_build3);
     loader.load('objects/yulia/building2.glb', handle_build4);
+
+    loader.load('objects/car/car1/scene.gltf', handle_car1);
+    // loader.load('objects/car/car2/scene.gltf', handle_car2);
+    // loader.load('objects/car/car3/scene.gltf', handle_car3);
+
     //gamau muncul sediih
     loader.load('objects/yulia/police.glb', handle_build5);
     loader.load('objects/yulia/post.glb', handle_build6);
@@ -180,8 +185,17 @@
         handle_load2(gltf, 25, 0, -10, 0, 0,  1, mesh);
     }
 
+    function handle_car1(gltf) {
+        handle_load2(gltf, 25, 0, -10, 0, 0,  1, mesh);
+    }
 
+    // function handle_car2(gltf) {
+    //     handle_load2(gltf, +25, 0, -100, 0, 0,  1, mesh);
+    // }
 
+    // function handle_car3(gltf) {
+    //     handle_load2(gltf, +25, 0, -10, 0, 0,  1, mesh);
+    // }
 
     //RENDER LOOP
     render();
