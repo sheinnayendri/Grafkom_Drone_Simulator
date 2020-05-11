@@ -35,7 +35,8 @@
 
     //CAMERA
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000 );
-    //camera.position.set(0, 100, -10);
+
+    //camera.position.set(0, 0, -50);
     camera.position.set(0, 20, -50);
     camera.lookAt(new THREE.Vector3(0,0,0)); 
 
@@ -57,7 +58,7 @@
     scene.add(light2);
   
     //FOG
-    scene.fog=new THREE.FogExp2( 0xffffff, 0.01 );
+  //  scene.fog=new THREE.FogExp2( 0xffffff, 0.01 );
 
     var loader = new THREE.GLTFLoader();
 
@@ -77,13 +78,17 @@
     loader.load('objects/yulia/store.glb', handle_build1);
     loader.load('objects/yulia/building.glb', handle_build2);
     loader.load('objects/yulia/Apartment.glb', handle_build3);
-    loader.load('objects/yulia/building2.glb', handle_build4);
+    loader.load('objects/yulia/gedung.glb', handle_build4);
     loader.load('objects/yulia/building.glb', handle_build21);
     loader.load('objects/yulia/GasStation.glb', handle_build5);
-    loader.load('objects/yulia/toko2.glb', handle_build6);
-
-
-
+    loader.load('objects/yulia/Apartment2.glb', handle_build6);
+    loader.load('objects/yulia/Apartment4.glb', handle_build8);
+    loader.load('objects/yulia/toko1.glb', handle_build9);
+    loader.load('objects/yulia/toko2.glb', handle_build10);
+    loader.load('objects/yulia/town.glb', handle_build11);
+  
+  
+  
     loader.load('objects/car/car1/scene.gltf', handle_car1);
     // loader.load('objects/car/car2/scene.gltf', handle_car2);
     // loader.load('objects/car/car3/scene.gltf', handle_car3);
@@ -116,91 +121,20 @@
 		scene.add( mesh );
     }
 
-    function handle_tree(gltf) {
-        handle_load(gltf, -5, -0.3, -20, 0.7, mesh);
-    }
-
-    function handle_tree2(gltf) {
-        handle_load(gltf, +1, +0, -20, 1, mesh);
-    }
-
-    function handle_tree3(gltf) {
-        handle_load(gltf, +5, +0, -20, 1, mesh);
-    }
-
-    function handle_tree4(gltf) {
-        handle_load(gltf, -5, +0, -18, 1, mesh);
-    }
-
-    function handle_tree5(gltf) {
-        handle_load(gltf, +20, +0, -20, 0.7, mesh);
-    }
-
-    function handle_tree6(gltf) {
-        handle_load(gltf, +25, +0, -20, 0.3, mesh);
-    }
-    
-    function handle_tree7(gltf) {
-        handle_load(gltf, -10, +0, -20, 0.7, mesh);
-    } 
-
-    function handle_tree8(gltf) {
-        handle_load(gltf, -15, +0, -20, 2, mesh);
-    }
-
-    function handle_bench(gltf) {
-        handle_load(gltf, +15, +0.5, -20, 1, bench_mesh);
-    }
-
+    // gamau muncul
     function handle_cloud(gltf) {
-        handle_load(gltf, +20, +0, -100, 1, cloud_mesh);
+        handle_load(gltf, +20, +0, -100, 10000, cloud_mesh);
     }
-
-    function handle_rocks(gltf) {
-        handle_load(gltf, -20, +0, -20, 1, rocks_mesh);
+    function handle_build11(gltf) {
+        handle_load(gltf, 0, 0, 0, 10000000, mesh);
     }
-
-    // x makin kanan makin negatif
-    // z makin depan makin negatif
-    //store
-    function handle_build1(gltf) {
-        handle_load2(gltf, -4.9, +0.1, -10, 0, 1.58, 0.22, mesh);
+    //toko1
+    function handle_build9(gltf) {
+        handle_load2(gltf, 31, 2, -8, 0, -2.95 ,100000000000, mesh);
     }
-    //gedung pink
-    function handle_build2(gltf) {
-        handle_load2(gltf, -10, 0, -10, 0, 1.6,  2, mesh);
-    }
-    //gedung pink 2
-    function handle_build21(gltf) {
-        handle_load2(gltf, 18.8, 0, -10, 0, 1.6,  2, mesh);
-    }
-    //apartement
-    function handle_build3(gltf) {
-        handle_load2(gltf, -10, 0, -5, 0, 1.6, 0.00005, mesh);
-    }
-    //gedung kecil
-    function handle_build4(gltf) {
-        handle_load(gltf, 0, -0.3, -10, 0.015, mesh);
-    }
-    //gas station
-    function handle_build5(gltf) {
-        handle_load2(gltf, 15, 0, -7, 0, 4.72, 0.005, mesh);
-    }
-
-    function handle_build6(gltf) {
-        handle_load(gltf, 0, 0, 0, 10000000000, mesh);
-    }
-
-
-
-
-
-
-
-
-
-    function handle_car1(gltf) {
-        handle_load2(gltf, 10, -0.3, -8, 0, 0,  1, mesh);
+    //toko2
+    function handle_build10(gltf) {
+        handle_load2(gltf, 0, 0, 0, 0, -3.1 ,10000000000000, mesh);
     }
 
     // function handle_car2(gltf) {
@@ -214,30 +148,94 @@
 
 
 
+    // x makin kanan makin negatif
+    // z makin depan makin negatif
+   
+    // komplek 1 random
+    // daun lebar
+    function handle_tree6(gltf) {
+        handle_load(gltf, +30, +0, -12, 0.3, mesh);
+    }
+    function handle_rocks(gltf) {
+        handle_load(gltf, 30, +0, -10, 1, rocks_mesh);
+    }
+    function handle_bench(gltf) {
+        handle_load(gltf, 30, +0.5, -13, 1, bench_mesh);
+    }
+    //jamur
+    function handle_tree3(gltf) {
+        handle_load(gltf, 35, +0, -10, 1, mesh);
+    }
+
+
+
+    // komplek 2
+    //gas station
+    function handle_build5(gltf) {
+        handle_load2(gltf, 15, 0, -7, 0, 4.72, 0.005, mesh);
+    }
+    //gedung pink 2
+    function handle_build21(gltf) {
+        handle_load2(gltf, 18.8, 0, -10, 0, 1.6, 2, mesh);
+    }
+    function handle_car1(gltf) {
+        handle_load2(gltf, 10, -0.3, -8, 0, 0,  1, mesh);
+    }
+    function handle_tree4(gltf) {
+        handle_load(gltf, 8, +0, -10, 1, mesh);
+    }
+    function handle_tree8(gltf) {
+        handle_load(gltf, 6.5, +0, -10, 2, mesh);
+    }
 
 
 
 
 
 
+    // komplek3
+    //store
+    function handle_build1(gltf) {
+        handle_load2(gltf, -7.9, +0.1, -10, 0, 1.58, 0.22, mesh);
+    }
+    //gedung pink
+    function handle_build2(gltf) {
+        handle_load2(gltf, -13, 0, -10, 0, 1.6,  2, mesh);
+    }
+    //apartement
+    function handle_build3(gltf) {
+        handle_load2(gltf, -13, 0, -5, 0, 1.6, 0.00005, mesh);
+    }
+    //gedung kecil
+    function handle_build4(gltf) {
+        handle_load(gltf, -3, -0.3, -10, 0.015, mesh);
+    }
+    function handle_tree5(gltf) {
+        handle_load(gltf, -17, +0, -12, 0.7, mesh);
+    }
+    function handle_tree7(gltf) {
+        handle_load(gltf, 0.6, +0, -10, 0.7, mesh);
+    } 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    //komplek4
+    //appatrmtmen2
+    function handle_build6(gltf) {
+        handle_load2(gltf, -29, 0, -10, 0, 1.6, 0.00007, mesh);
+    }
+    // appartmnet4
+    function handle_build8(gltf) {
+        handle_load2(gltf, -37.5, 0, -10, 0, 1.6, 0.00007, mesh);
+    }
+    function handle_tree(gltf) {
+        handle_load(gltf, -23.5, -0.3, -13, 0.7, mesh);
+    }
+    function handle_tree2(gltf) {
+        handle_load(gltf, -28, 0, -15, 1, mesh);
+    }
 
 
 
