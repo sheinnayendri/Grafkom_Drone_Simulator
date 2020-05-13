@@ -36,7 +36,7 @@
     //CAMERA
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-    //camera.position.set(0, 0, -50);
+    // camera.position.set(50, 40, 50);
     camera.position.set(0, 20, -50);
     camera.lookAt(new THREE.Vector3(0,0,0)); 
 
@@ -66,23 +66,34 @@
     loader.load('objects/glb/tree_sheinna1.glb', handle_tree2);
     loader.load('objects/glb/tree_sheinna2.glb', handle_tree3);
     loader.load('objects/apple_tree/scene.gltf', handle_tree4);
+    loader.load('objects/apple_tree/scene.gltf', handle_tree41);
     loader.load('objects/pine_tree/scene.gltf', handle_tree5);
     loader.load('objects/simple_tree/scene.gltf', handle_tree6);
+    loader.load('objects/simple_tree/scene.gltf', handle_tree61);
+    loader.load('objects/simple_tree/scene.gltf', handle_tree611);
     loader.load('objects/spruce_tree/scene.gltf', handle_tree7);
     loader.load('objects/spruce_tree2/scene.gltf', handle_tree8);
+    loader.load('objects/spruce_tree2/scene.gltf', handle_tree81);
     loader.load('objects/bench/scene.gltf', handle_bench);
+    loader.load('objects/bench/scene.gltf', handle_bench1);
+    loader.load('objects/bench/scene.gltf', handle_bench2);
     loader.load('objects/rocks/scene.gltf', handle_rocks);
     loader.load('objects/cloud/scene.gltf', handle_cloud);
 
 
     loader.load('objects/yulia/store.glb', handle_build1);
+    loader.load('objects/yulia/store.glb', handle_build111);
+    loader.load('objects/yulia/store.glb', handle_build111);
     loader.load('objects/yulia/building.glb', handle_build2);
     loader.load('objects/yulia/Apartment.glb', handle_build3);
     loader.load('objects/yulia/gedung.glb', handle_build4);
+    loader.load('objects/yulia/gedung.glb', handle_build41);
     loader.load('objects/yulia/building.glb', handle_build21);
     loader.load('objects/yulia/GasStation.glb', handle_build5);
     loader.load('objects/yulia/Apartment2.glb', handle_build6);
+    loader.load('objects/yulia/Apartment2.glb', handle_build61);
     loader.load('objects/yulia/Apartment4.glb', handle_build8);
+    loader.load('objects/yulia/Apartment4.glb', handle_build81);
     loader.load('objects/yulia/toko1.glb', handle_build9);
     loader.load('objects/yulia/toko2.glb', handle_build10);
     loader.load('objects/yulia/town.glb', handle_build11);
@@ -90,6 +101,7 @@
   
   
     loader.load('objects/car/car1/scene.gltf', handle_car1);
+    loader.load('objects/car/car1/scene.gltf', handle_car11);
     // loader.load('objects/car/car2/scene.gltf', handle_car2);
     // loader.load('objects/car/car3/scene.gltf', handle_car3);
 
@@ -125,9 +137,6 @@
     function handle_cloud(gltf) {
         handle_load(gltf, +20, +0, -100, 10000, cloud_mesh);
     }
-    function handle_build11(gltf) {
-        handle_load(gltf, 0, 0, 0, 10000000, mesh);
-    }
     //toko1
     function handle_build9(gltf) {
         handle_load2(gltf, 31, 2, -8, 0, -2.95 ,100000000000, mesh);
@@ -146,11 +155,27 @@
     // }
 
 
-
-
     // x makin kanan makin negatif
     // z makin depan makin negatif
    
+    //pabrik pojok kanan belakang
+    function handle_build11(gltf) {
+        handle_load2(gltf, -28, 0, 5, 0, 1.58, 0.006, mesh);
+    }
+    function handle_tree611(gltf) {
+        handle_load(gltf, -30, +0, 10, 0.5, mesh);
+    }
+    function handle_tree41(gltf) {
+        handle_load(gltf, -40, +0, 10, 1, mesh);
+    }
+    function handle_bench1(gltf) {
+        handle_load2(gltf, -28, +0.5, 8.5, 0, Math.PI, 1, bench_mesh);
+    }
+    function handle_bench2(gltf) {
+        handle_load2(gltf, -23, +0.5, 8.5, 0, Math.PI, 1, bench_mesh);
+    }
+
+
     // komplek 1 random
     // daun lebar
     function handle_tree6(gltf) {
@@ -188,10 +213,31 @@
         handle_load(gltf, 6.5, +0, -10, 2, mesh);
     }
 
-
-
-
-
+    // komplek 2 belakang
+    //gedung kecil
+    function handle_build81(gltf) {
+        handle_load2(gltf, 23, 0, 13.5, 0, 0, 0.00007, mesh);
+    }
+    //gas station
+    function handle_build111(gltf) {
+        handle_load2(gltf, 15, 0, 13, 0, 1.58, 0.22, mesh);
+    }
+    //gedung pink 2
+    function handle_car11(gltf) {
+        handle_load2(gltf, 10, -0.3, 12, 0, 0,  1, mesh);
+    }
+    function handle_tree61(gltf) {
+        handle_load(gltf, 8, +0, 10, 0.5, mesh);
+    }
+    function handle_build61(gltf) {
+        handle_load2(gltf, 13, 0, 19, 0, Math.PI, 0.00007, mesh);
+    }
+    function handle_build41(gltf) {
+        handle_load(gltf, 24, -0.3, 20, 0.015, mesh);
+    }
+    function handle_tree81(gltf) {
+        handle_load(gltf, 19.5, +0, 21, 3, mesh);
+    }
 
     // komplek3
     //store
