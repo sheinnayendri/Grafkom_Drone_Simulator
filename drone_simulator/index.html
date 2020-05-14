@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>threejs - models</title>
+    <title>Final Project - OK</title>
 
     <style>
     	body{
@@ -17,6 +17,7 @@
     <script src="GLTFLoader.js"></script>
 
     <script>
+    var music = new Audio("sound/If_I_Had_a_Chicken.mp3");
 
     var player = { height:1.0}
     var renderer,
@@ -36,8 +37,8 @@
     //CAMERA
     camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000 );
 
-    // camera.position.set(50, 40, 50);
-    camera.position.set(0, 20, -50);
+    camera.position.set(0, 80, 50);
+  //  camera.position.set(50, 40, 30);
     camera.lookAt(new THREE.Vector3(0,0,0)); 
 
     //SCENE
@@ -58,16 +59,26 @@
     scene.add(light2);
   
     //FOG
-  //  scene.fog=new THREE.FogExp2( 0xffffff, 0.01 );
+    // scene.fog=new THREE.FogExp2( 0xffffff, 0.01 );
 
     var loader = new THREE.GLTFLoader();
 
     loader.load('objects/pine_tree/scene.gltf', handle_tree);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree1);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree11);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree111);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree1111);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree11111);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree111111);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree1111111);
     loader.load('objects/glb/tree_sheinna1.glb', handle_tree2);
     loader.load('objects/glb/tree_sheinna2.glb', handle_tree3);
     loader.load('objects/apple_tree/scene.gltf', handle_tree4);
     loader.load('objects/apple_tree/scene.gltf', handle_tree41);
     loader.load('objects/pine_tree/scene.gltf', handle_tree5);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree51);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree511);
+    loader.load('objects/pine_tree/scene.gltf', handle_tree5111);
     loader.load('objects/simple_tree/scene.gltf', handle_tree6);
     loader.load('objects/simple_tree/scene.gltf', handle_tree61);
     loader.load('objects/simple_tree/scene.gltf', handle_tree611);
@@ -78,26 +89,22 @@
     loader.load('objects/bench/scene.gltf', handle_bench1);
     loader.load('objects/bench/scene.gltf', handle_bench2);
     loader.load('objects/rocks/scene.gltf', handle_rocks);
-    loader.load('objects/cloud/scene.gltf', handle_cloud);
-
 
     loader.load('objects/yulia/store.glb', handle_build1);
-    loader.load('objects/yulia/store.glb', handle_build111);
-    loader.load('objects/yulia/store.glb', handle_build111);
+    loader.load('objects/yulia/store.glb', handle_build11);
+    loader.load('objects/yulia/store3.glb', handle_build12);
     loader.load('objects/yulia/building.glb', handle_build2);
+    loader.load('objects/yulia/building.glb', handle_build21);
+    loader.load('objects/yulia/building2.glb', handle_build22);
     loader.load('objects/yulia/Apartment.glb', handle_build3);
     loader.load('objects/yulia/gedung.glb', handle_build4);
     loader.load('objects/yulia/gedung.glb', handle_build41);
-    loader.load('objects/yulia/building.glb', handle_build21);
     loader.load('objects/yulia/GasStation.glb', handle_build5);
     loader.load('objects/yulia/Apartment2.glb', handle_build6);
     loader.load('objects/yulia/Apartment2.glb', handle_build61);
     loader.load('objects/yulia/Apartment4.glb', handle_build8);
     loader.load('objects/yulia/Apartment4.glb', handle_build81);
-    loader.load('objects/yulia/toko1.glb', handle_build9);
-    loader.load('objects/yulia/toko2.glb', handle_build10);
-    loader.load('objects/yulia/town.glb', handle_build11);
-  
+    loader.load('objects/yulia/town.glb', handle_builda11);
   
   
     loader.load('objects/car/car1/scene.gltf', handle_car1);
@@ -105,8 +112,10 @@
     // loader.load('objects/car/car2/scene.gltf', handle_car2);
     // loader.load('objects/car/car3/scene.gltf', handle_car3);
 
+
     var mesh, bench_mesh, cloud_mesh, rocks_mesh;
 
+    //load biasa
     function handle_load(gltf, x, y, z,sc, mesh) {
         console.log(gltf);
         mesh = gltf.scene;
@@ -118,7 +127,8 @@
         mesh.position.y = y;
 		scene.add( mesh );
     }
-
+    
+    // ada rotate x, y
     function handle_load2(gltf, x, y, z,xr, yr, sc, mesh) {
         console.log(gltf);
         mesh = gltf.scene;
@@ -133,34 +143,28 @@
 		scene.add( mesh );
     }
 
-    // gamau muncul
-    function handle_cloud(gltf) {
-        handle_load(gltf, +20, +0, -100, 10000, cloud_mesh);
+    //ada scale x,y,z
+    function handle_load3(gltf, x, y, z,xr, yr, sca, scb, scc, mesh) {
+        console.log(gltf);
+        mesh = gltf.scene;
+        console.log(mesh.children[0]);
+        mesh.children[0].material = new THREE.MeshLambertMaterial();
+        mesh.scale.set(sca, scb, scc);    
+        mesh.position.z = z;
+        mesh.position.x = x;
+        mesh.position.y = y;
+        mesh.rotation.x = xr;
+        mesh.rotation.y = yr;
+		scene.add( mesh );
     }
-    //toko1
-    function handle_build9(gltf) {
-        handle_load2(gltf, 31, 2, -8, 0, -2.95 ,100000000000, mesh);
-    }
-    //toko2
-    function handle_build10(gltf) {
-        handle_load2(gltf, 0, 0, 0, 0, -3.1 ,10000000000000, mesh);
-    }
-
-    // function handle_car2(gltf) {
-    //     handle_load2(gltf, +25, 0, -100, 0, 0,  1, mesh);
-    // }
-
-    // function handle_car3(gltf) {
-    //     handle_load2(gltf, +25, 0, -10, 0, 0,  1, mesh);
-    // }
 
 
     // x makin kanan makin negatif
     // z makin depan makin negatif
    
     //pabrik pojok kanan belakang
-    function handle_build11(gltf) {
-        handle_load2(gltf, -28, 0, 5, 0, 1.58, 0.006, mesh);
+    function handle_builda11(gltf) {
+        handle_load2(gltf, -30, 0, 5, 0, 1.58, 0.006, mesh);
     }
     function handle_tree611(gltf) {
         handle_load(gltf, -30, +0, 10, 0.5, mesh);
@@ -218,8 +222,7 @@
     function handle_build81(gltf) {
         handle_load2(gltf, 23, 0, 13.5, 0, 0, 0.00007, mesh);
     }
-    //gas station
-    function handle_build111(gltf) {
+    function handle_build11(gltf) {
         handle_load2(gltf, 15, 0, 13, 0, 1.58, 0.22, mesh);
     }
     //gedung pink 2
@@ -257,14 +260,28 @@
         handle_load(gltf, -3, -0.3, -10, 0.015, mesh);
     }
     function handle_tree5(gltf) {
-        handle_load(gltf, -17, +0, -12, 0.7, mesh);
+        handle_load(gltf, -17, +0, -13, 0.7, mesh);
+    }
+    function handle_tree51(gltf) {
+        handle_load(gltf, -17, +0, -10, 0.7, mesh);
+    }
+    function handle_tree511(gltf) {
+        handle_load(gltf, -17, +0, -7, 0.7, mesh);
+    }
+    function handle_tree5111(gltf) {
+        handle_load(gltf, -17, +0, -4, 0.7, mesh);
     }
     function handle_tree7(gltf) {
         handle_load(gltf, 0.6, +0, -10, 0.7, mesh);
     } 
 
-
-
+    //KOMPLEK 3 BELAKANG
+    function handle_build22(gltf) {
+        handle_load2(gltf, -10, 0, 11, 0, 1.6,  0.025, mesh);
+    }
+    function handle_build12(gltf) {
+        handle_load3(gltf, -3, 0.01, 11, 0, 1.58, 0.25, 0.35, 0.25, mesh);
+    }
 
 
     //komplek4
@@ -279,22 +296,98 @@
     function handle_tree(gltf) {
         handle_load(gltf, -23.5, -0.3, -13, 0.7, mesh);
     }
+    function handle_tree1(gltf) {
+        handle_load(gltf, -23.5, -0.3, -10, 0.7, mesh);
+    }
+    function handle_tree11(gltf) {
+        handle_load(gltf, -23.5, -0.3, -7, 0.7, mesh);
+    }
+    function handle_tree111(gltf) {
+        handle_load(gltf, -23.5, -0.3, -4, 0.7, mesh);
+    }
+    function handle_tree1111(gltf) {
+        handle_load(gltf, -27.5, -0.3, -4, 0.7, mesh);
+    }
+    function handle_tree11111(gltf) {
+        handle_load(gltf, -31.5, -0.3, -4, 0.7, mesh);
+    }
+    function handle_tree111111(gltf) {
+        handle_load(gltf, -35.5, -0.3, -4, 0.7, mesh);
+    }
+    function handle_tree1111111(gltf) {
+        handle_load(gltf, -39.5, -0.3, -4, 0.7, mesh);
+    }
     function handle_tree2(gltf) {
         handle_load(gltf, -28, 0, -15, 1, mesh);
     }
 
-
+    // var mouse = {x:0,y:0};
+    var cameraMoves = {x:0,y:0,z:-0.1,move:false,speed:0.2};
 
 
     //RENDER LOOP
     render();
 
+    // function mouseMove(e){
+    //     if (e.clientX>mouse.x) { camera.position.x += cameraMoves.speed; } else { camera.position.x += -cameraMoves.speed; }
+    //     if (e.clientY>mouse.y) { camera.position.y += -cameraMoves.speed; } else { camera.position.y += cameraMoves.speed; }
+
+    //     mouse.x = e.clientX;
+    //     mouse.y = e.clientY;
+    // }
+    // window.addEventListener('mousemove', mouseMove);
+
     var delta = 0;
     var prevTime = Date.now();
 
     function render() {
-
-        delta += 0.1;
+        var delta = 0.01;
+        var yawMove = 0.001;
+        document.addEventListener('keydown',onDocumentKeyDown,false);
+        function onDocumentKeyDown(event){
+            event = event || window.event;
+            var keycode = event.keyCode;
+            switch(keycode){
+                // Case MOVE
+                case 65 : //A Left
+                    camera.position.x = camera.position.x - delta;
+                    break;
+                case 87 : //W Up
+                    camera.position.z = camera.position.z - delta;
+                    break;
+                case 68 : //D Right
+                    camera.position.x = camera.position.x + delta;
+                    break;
+                case 83 : //S Down
+                    camera.position.z = camera.position.z + delta;
+                    break;
+                case 82 : //R Far
+                    camera.position.y = camera.position.y + delta;
+                    break;
+                case 70 : //F Near 
+                    camera.position.y = camera.position.y - delta;
+                    break;
+                // Case YAW
+                case 37 : //arrowLeft
+                    camera.rotation.y = camera.rotation.y + yawMove;
+                    break;
+                case 39 : //arrowRight
+                    camera.rotation.y = camera.rotation.y - yawMove;
+                    break;
+                // Case PITCH
+                case 38 : //arrowUp
+                    camera.rotation.x = camera.rotation.x + yawMove;
+                    break;
+                case 40 : //arrowDown
+                    camera.rotation.x = camera.rotation.x - yawMove;
+                    break;
+            }
+            document.addEventListener('keyup',onDocumentKeyUp,false);
+            music.play();
+        }
+        function onDocumentKeyUp(event){
+            document.removeEventListener('keydown',onDocumentKeyDown,false);
+        }
         // if (mesh) mesh.rotation.y += 0.01;
         // if (mesh2) mesh2.rotation.y += 0.01;
         // if (mesh3) mesh3.rotation.y += 0.01;
