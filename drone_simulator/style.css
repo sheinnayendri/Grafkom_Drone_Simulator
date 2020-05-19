@@ -1,0 +1,53 @@
+* { margin: 0; padding: 0; }
+html , body { width:100%; height:100%; }
+canvas { display: inline-block; text-align:center;}
+
+p{
+    font-family: 'Courier New', Courier, monospace;
+    text-align: left;
+    color:grey;
+}
+
+img {
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+}
+
+#nav2 {
+    position: absolute;
+    bottom: 155px;
+    left: 2px;
+}
+
+#drone {
+    position: absolute;
+    top: 0px;
+}
+
+#kx{
+    position: absolute;
+    font-family: 'Segoe UI';
+    color:white;
+    background-color: black;
+    bottom: 205px;
+    left: 80px;
+}
+
+#ky{
+    position: absolute;
+    font-family: 'Segoe UI';
+    color:white;
+    background-color: black;
+    bottom: 180px;
+    left: 80px;
+}
+
+#kz{
+    position: absolute;
+    font-family: 'Segoe UI';
+    color:white;
+    background-color: black;
+    bottom: 155px;
+    left: 80px;
+}
