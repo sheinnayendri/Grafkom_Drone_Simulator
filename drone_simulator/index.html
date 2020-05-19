@@ -1,400 +1,1243 @@
 <html>
-<head>
-    <title>Final Project - OK</title>
+    <head>
+        <title>Final Project - OK</title>
 
-    <style>
-    	body{
-    		margin: 0;
-    		overflow: hidden;
-    	}
-    </style>
-</head>
-<body>
-
-    <canvas id="myCanvas"></canvas>
-
-    <script src="three.js"></script>
-    <script src="GLTFLoader.js"></script>
-
-    <script>
-    var music = new Audio("sound/If_I_Had_a_Chicken.mp3");
-
-    var player = { height:1.0}
-    var renderer,
-    	scene,
-    	camera,
-    	myCanvas = document.getElementById('myCanvas');
-
-    //RENDERER
-    renderer = new THREE.WebGLRenderer({
-      canvas: myCanvas, 
-      antialias: true
-    });
-    renderer.setClearColor(0x55e7ff);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    //CAMERA
-    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000 );
-
-    camera.position.set(0, 80, 50);
-  //  camera.position.set(50, 40, 30);
-    camera.lookAt(new THREE.Vector3(0,0,0)); 
-
-    //SCENE
-    scene = new THREE.Scene();
-
-    //GROUND PLANE
-    var planeGeometry = new THREE.PlaneGeometry(100,100,100,100); 
-    var planeMaterial = new THREE.MeshBasicMaterial({color: 0x2a6002, wireframe:false}); 
-    plane = new THREE.Mesh(planeGeometry,planeMaterial);
-    plane.rotation.x -= Math.PI / 2;
-    scene.add( plane );
-
-    //LIGHTS
-    var light = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(light);
-
-    var light2 = new THREE.PointLight(0xffffff, 0.5);
-    scene.add(light2);
-  
-    //FOG
-    // scene.fog=new THREE.FogExp2( 0xffffff, 0.01 );
-
-    var loader = new THREE.GLTFLoader();
-
-    loader.load('objects/pine_tree/scene.gltf', handle_tree);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree1);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree11);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree111);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree1111);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree11111);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree111111);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree1111111);
-    loader.load('objects/glb/tree_sheinna1.glb', handle_tree2);
-    loader.load('objects/glb/tree_sheinna2.glb', handle_tree3);
-    loader.load('objects/apple_tree/scene.gltf', handle_tree4);
-    loader.load('objects/apple_tree/scene.gltf', handle_tree41);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree5);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree51);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree511);
-    loader.load('objects/pine_tree/scene.gltf', handle_tree5111);
-    loader.load('objects/simple_tree/scene.gltf', handle_tree6);
-    loader.load('objects/simple_tree/scene.gltf', handle_tree61);
-    loader.load('objects/simple_tree/scene.gltf', handle_tree611);
-    loader.load('objects/spruce_tree/scene.gltf', handle_tree7);
-    loader.load('objects/spruce_tree2/scene.gltf', handle_tree8);
-    loader.load('objects/spruce_tree2/scene.gltf', handle_tree81);
-    loader.load('objects/bench/scene.gltf', handle_bench);
-    loader.load('objects/bench/scene.gltf', handle_bench1);
-    loader.load('objects/bench/scene.gltf', handle_bench2);
-    loader.load('objects/rocks/scene.gltf', handle_rocks);
-
-    loader.load('objects/yulia/store.glb', handle_build1);
-    loader.load('objects/yulia/store.glb', handle_build11);
-    loader.load('objects/yulia/store3.glb', handle_build12);
-    loader.load('objects/yulia/building.glb', handle_build2);
-    loader.load('objects/yulia/building.glb', handle_build21);
-    loader.load('objects/yulia/building2.glb', handle_build22);
-    loader.load('objects/yulia/Apartment.glb', handle_build3);
-    loader.load('objects/yulia/gedung.glb', handle_build4);
-    loader.load('objects/yulia/gedung.glb', handle_build41);
-    loader.load('objects/yulia/GasStation.glb', handle_build5);
-    loader.load('objects/yulia/Apartment2.glb', handle_build6);
-    loader.load('objects/yulia/Apartment2.glb', handle_build61);
-    loader.load('objects/yulia/Apartment4.glb', handle_build8);
-    loader.load('objects/yulia/Apartment4.glb', handle_build81);
-    loader.load('objects/yulia/town.glb', handle_builda11);
-  
-  
-    loader.load('objects/car/car1/scene.gltf', handle_car1);
-    loader.load('objects/car/car1/scene.gltf', handle_car11);
-    // loader.load('objects/car/car2/scene.gltf', handle_car2);
-    // loader.load('objects/car/car3/scene.gltf', handle_car3);
-
-
-    var mesh, bench_mesh, cloud_mesh, rocks_mesh;
-
-    //load biasa
-    function handle_load(gltf, x, y, z,sc, mesh) {
-        console.log(gltf);
-        mesh = gltf.scene;
-        console.log(mesh.children[0]);
-        mesh.children[0].material = new THREE.MeshLambertMaterial();
-        mesh.scale.set(sc, sc, sc);    
-        mesh.position.z = z;
-        mesh.position.x = x;
-        mesh.position.y = y;
-		scene.add( mesh );
-    }
-    
-    // ada rotate x, y
-    function handle_load2(gltf, x, y, z,xr, yr, sc, mesh) {
-        console.log(gltf);
-        mesh = gltf.scene;
-        console.log(mesh.children[0]);
-        mesh.children[0].material = new THREE.MeshLambertMaterial();
-        mesh.scale.set(sc, sc, sc);    
-        mesh.position.z = z;
-        mesh.position.x = x;
-        mesh.position.y = y;
-        mesh.rotation.x = xr;
-        mesh.rotation.y = yr;
-		scene.add( mesh );
-    }
-
-    //ada scale x,y,z
-    function handle_load3(gltf, x, y, z,xr, yr, sca, scb, scc, mesh) {
-        console.log(gltf);
-        mesh = gltf.scene;
-        console.log(mesh.children[0]);
-        mesh.children[0].material = new THREE.MeshLambertMaterial();
-        mesh.scale.set(sca, scb, scc);    
-        mesh.position.z = z;
-        mesh.position.x = x;
-        mesh.position.y = y;
-        mesh.rotation.x = xr;
-        mesh.rotation.y = yr;
-		scene.add( mesh );
-    }
-
-
-    // x makin kanan makin negatif
-    // z makin depan makin negatif
-   
-    //pabrik pojok kanan belakang
-    function handle_builda11(gltf) {
-        handle_load2(gltf, -30, 0, 5, 0, 1.58, 0.006, mesh);
-    }
-    function handle_tree611(gltf) {
-        handle_load(gltf, -30, +0, 10, 0.5, mesh);
-    }
-    function handle_tree41(gltf) {
-        handle_load(gltf, -40, +0, 10, 1, mesh);
-    }
-    function handle_bench1(gltf) {
-        handle_load2(gltf, -28, +0.5, 8.5, 0, Math.PI, 1, bench_mesh);
-    }
-    function handle_bench2(gltf) {
-        handle_load2(gltf, -23, +0.5, 8.5, 0, Math.PI, 1, bench_mesh);
-    }
-
-
-    // komplek 1 random
-    // daun lebar
-    function handle_tree6(gltf) {
-        handle_load(gltf, +30, +0, -12, 0.3, mesh);
-    }
-    function handle_rocks(gltf) {
-        handle_load(gltf, 30, +0, -10, 1, rocks_mesh);
-    }
-    function handle_bench(gltf) {
-        handle_load(gltf, 30, +0.5, -13, 1, bench_mesh);
-    }
-    //jamur
-    function handle_tree3(gltf) {
-        handle_load(gltf, 35, +0, -10, 1, mesh);
-    }
-
-
-
-    // komplek 2
-    //gas station
-    function handle_build5(gltf) {
-        handle_load2(gltf, 15, 0, -7, 0, 4.72, 0.005, mesh);
-    }
-    //gedung pink 2
-    function handle_build21(gltf) {
-        handle_load2(gltf, 18.8, 0, -10, 0, 1.6, 2, mesh);
-    }
-    function handle_car1(gltf) {
-        handle_load2(gltf, 10, -0.3, -8, 0, 0,  1, mesh);
-    }
-    function handle_tree4(gltf) {
-        handle_load(gltf, 8, +0, -10, 1, mesh);
-    }
-    function handle_tree8(gltf) {
-        handle_load(gltf, 6.5, +0, -10, 2, mesh);
-    }
-
-    // komplek 2 belakang
-    //gedung kecil
-    function handle_build81(gltf) {
-        handle_load2(gltf, 23, 0, 13.5, 0, 0, 0.00007, mesh);
-    }
-    function handle_build11(gltf) {
-        handle_load2(gltf, 15, 0, 13, 0, 1.58, 0.22, mesh);
-    }
-    //gedung pink 2
-    function handle_car11(gltf) {
-        handle_load2(gltf, 10, -0.3, 12, 0, 0,  1, mesh);
-    }
-    function handle_tree61(gltf) {
-        handle_load(gltf, 8, +0, 10, 0.5, mesh);
-    }
-    function handle_build61(gltf) {
-        handle_load2(gltf, 13, 0, 19, 0, Math.PI, 0.00007, mesh);
-    }
-    function handle_build41(gltf) {
-        handle_load(gltf, 24, -0.3, 20, 0.015, mesh);
-    }
-    function handle_tree81(gltf) {
-        handle_load(gltf, 19.5, +0, 21, 3, mesh);
-    }
-
-    // komplek3
-    //store
-    function handle_build1(gltf) {
-        handle_load2(gltf, -7.9, +0.1, -10, 0, 1.58, 0.22, mesh);
-    }
-    //gedung pink
-    function handle_build2(gltf) {
-        handle_load2(gltf, -13, 0, -10, 0, 1.6,  2, mesh);
-    }
-    //apartement
-    function handle_build3(gltf) {
-        handle_load2(gltf, -13, 0, -5, 0, 1.6, 0.00005, mesh);
-    }
-    //gedung kecil
-    function handle_build4(gltf) {
-        handle_load(gltf, -3, -0.3, -10, 0.015, mesh);
-    }
-    function handle_tree5(gltf) {
-        handle_load(gltf, -17, +0, -13, 0.7, mesh);
-    }
-    function handle_tree51(gltf) {
-        handle_load(gltf, -17, +0, -10, 0.7, mesh);
-    }
-    function handle_tree511(gltf) {
-        handle_load(gltf, -17, +0, -7, 0.7, mesh);
-    }
-    function handle_tree5111(gltf) {
-        handle_load(gltf, -17, +0, -4, 0.7, mesh);
-    }
-    function handle_tree7(gltf) {
-        handle_load(gltf, 0.6, +0, -10, 0.7, mesh);
-    } 
-
-    //KOMPLEK 3 BELAKANG
-    function handle_build22(gltf) {
-        handle_load2(gltf, -10, 0, 11, 0, 1.6,  0.025, mesh);
-    }
-    function handle_build12(gltf) {
-        handle_load3(gltf, -3, 0.01, 11, 0, 1.58, 0.25, 0.35, 0.25, mesh);
-    }
-
-
-    //komplek4
-    //appatrmtmen2
-    function handle_build6(gltf) {
-        handle_load2(gltf, -29, 0, -10, 0, 1.6, 0.00007, mesh);
-    }
-    // appartmnet4
-    function handle_build8(gltf) {
-        handle_load2(gltf, -37.5, 0, -10, 0, 1.6, 0.00007, mesh);
-    }
-    function handle_tree(gltf) {
-        handle_load(gltf, -23.5, -0.3, -13, 0.7, mesh);
-    }
-    function handle_tree1(gltf) {
-        handle_load(gltf, -23.5, -0.3, -10, 0.7, mesh);
-    }
-    function handle_tree11(gltf) {
-        handle_load(gltf, -23.5, -0.3, -7, 0.7, mesh);
-    }
-    function handle_tree111(gltf) {
-        handle_load(gltf, -23.5, -0.3, -4, 0.7, mesh);
-    }
-    function handle_tree1111(gltf) {
-        handle_load(gltf, -27.5, -0.3, -4, 0.7, mesh);
-    }
-    function handle_tree11111(gltf) {
-        handle_load(gltf, -31.5, -0.3, -4, 0.7, mesh);
-    }
-    function handle_tree111111(gltf) {
-        handle_load(gltf, -35.5, -0.3, -4, 0.7, mesh);
-    }
-    function handle_tree1111111(gltf) {
-        handle_load(gltf, -39.5, -0.3, -4, 0.7, mesh);
-    }
-    function handle_tree2(gltf) {
-        handle_load(gltf, -28, 0, -15, 1, mesh);
-    }
-
-    // var mouse = {x:0,y:0};
-    var cameraMoves = {x:0,y:0,z:-0.1,move:false,speed:0.2};
-
-
-    //RENDER LOOP
-    render();
-
-    // function mouseMove(e){
-    //     if (e.clientX>mouse.x) { camera.position.x += cameraMoves.speed; } else { camera.position.x += -cameraMoves.speed; }
-    //     if (e.clientY>mouse.y) { camera.position.y += -cameraMoves.speed; } else { camera.position.y += cameraMoves.speed; }
-
-    //     mouse.x = e.clientX;
-    //     mouse.y = e.clientY;
-    // }
-    // window.addEventListener('mousemove', mouseMove);
-
-    var delta = 0;
-    var prevTime = Date.now();
-
-    function render() {
-        var delta = 0.01;
-        var yawMove = 0.001;
-        document.addEventListener('keydown',onDocumentKeyDown,false);
-        function onDocumentKeyDown(event){
-            event = event || window.event;
-            var keycode = event.keyCode;
-            switch(keycode){
-                // Case MOVE
-                case 65 : //A Left
-                    camera.position.x = camera.position.x - delta;
-                    break;
-                case 87 : //W Up
-                    camera.position.z = camera.position.z - delta;
-                    break;
-                case 68 : //D Right
-                    camera.position.x = camera.position.x + delta;
-                    break;
-                case 83 : //S Down
-                    camera.position.z = camera.position.z + delta;
-                    break;
-                case 82 : //R Far
-                    camera.position.y = camera.position.y + delta;
-                    break;
-                case 70 : //F Near 
-                    camera.position.y = camera.position.y - delta;
-                    break;
-                // Case YAW
-                case 37 : //arrowLeft
-                    camera.rotation.y = camera.rotation.y + yawMove;
-                    break;
-                case 39 : //arrowRight
-                    camera.rotation.y = camera.rotation.y - yawMove;
-                    break;
-                // Case PITCH
-                case 38 : //arrowUp
-                    camera.rotation.x = camera.rotation.x + yawMove;
-                    break;
-                case 40 : //arrowDown
-                    camera.rotation.x = camera.rotation.x - yawMove;
-                    break;
+        <style>
+            body{
+                margin: 0;
+                overflow: hidden;
+                width: 100vw;
+                height: 100vh;
+                display: block;
+                background: url(objects/ba.jpeg) no-repeat center center;
+                background-size: cover;
             }
-            document.addEventListener('keyup',onDocumentKeyUp,false);
-            music.play();
+        </style>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="label" id="kx">x: <span class="text" id="posx">0</span></div>
+        <div class="label" id="ky">y: <span class="text" id="posy">0</span></div>
+        <div class="label" id="kz">z: <span class="text" id="posz">0</span></div>
+
+        <img id="nav" src="objects/nav/nav1.png" alt="Drone Navigator" width="150" height="150">
+        <img id="nav2" src="objects/nav/nav2.png" alt="Drone Navigator Fly" width="75" height="75">
+        <img id="drone" src="objects/nav/drone.png" alt="Drone" width="100%" height="150">
+
+        <canvas id="myCanvas"></canvas>
+
+        <script src="three.js"></script>
+        <script src="GLTFLoader.js"></script>
+
+        <script>
+        var music = new Audio("sound/If_I_Had_a_Chicken.mp3");
+
+        var player = { height:1.0}
+        var renderer,
+            scene,
+            camera,
+            myCanvas = document.getElementById('myCanvas');
+
+        //RENDERER
+        renderer = new THREE.WebGLRenderer({
+        canvas: myCanvas, 
+        antialias: true
+        });
+        renderer.setClearColor(0x55e7ff);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.BasicShadowMap;
+        renderer.backgroundMesh = true;
+
+        //CAMERA
+        camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000 );
+
+      //   camera.position.set(-1.3, .479, -43.87);
+        // camera.position.set(0, 36, 82);
+        camera.position.set(-30.8, 3.7, 53.6);
+        // camera.position.set(42, 36, 15);
+       //  camera.position.set(-28.76, 3.66, -11.4); //kamera lihat kura kura
+        camera.lookAt(new THREE.Vector3(-30.8, -1, 40)); 
+        // camera.lookAt(new THREE.Vector3(0,0,0)); 
+
+        //SCENE
+        scene = new THREE.Scene();
+
+        //GROUND PLANE
+        var planeGeometry = new THREE.PlaneGeometry(100,100,100,100); 
+        var planeMaterial = new THREE.MeshPhongMaterial({color: 0xc0c0c0, wireframe:false}); 
+        plane = new THREE.Mesh(planeGeometry,planeMaterial);
+        plane.rotation.x -= Math.PI / 2;
+        plane.receiveShadow = true;
+        scene.add( plane );
+
+        // Load the background texture
+        const load = new THREE.TextureLoader();
+        const bgTexture = load.load('objects/ba.jpeg');
+        scene.background = bgTexture;
+        
+
+        //LIGHTS
+        var light = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(light);
+
+        var light2 = new THREE.PointLight(0xffffff, 0.5);
+        light2.position.set(0, 100, 20);
+        light2.castShadow = true;
+        light2.shadow.camera.near = 0.1;
+        light2.shadow.camera.far = 25;
+        scene.add(light2);
+    
+        var spotLight = new THREE.SpotLight( 0xffffff );
+        spotLight.position.set( 0, 100, 10 );
+
+        spotLight.castShadow = true;
+
+        spotLight.shadow.mapSize.width = 1024;
+        spotLight.shadow.mapSize.height = 1024;
+
+        spotLight.shadow.camera.near = 0.1;
+        spotLight.shadow.camera.far = 50;
+        spotLight.shadow.camera.fov = 30;
+
+        scene.add( spotLight );
+
+        //FOG
+       scene.fog=new THREE.FogExp2( 0xffffff, 0.01 );
+
+        var loader = new THREE.GLTFLoader();
+
+        loader.load('objects/pine_tree/scene.gltf', handle_tree);
+        loader.load('objects/pine_tree/scene.gltf', handle_treec);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree1);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree1c);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree11);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree11c);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree111);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree111c);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree1111);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree1111c);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree11111);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree11111c);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree111111);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree111111c);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree1111111);
+        loader.load('objects/pine_tree/scene.gltf', handle_treece);
+        loader.load('objects/pine_tree/scene.gltf', handle_treecee);
+        loader.load('objects/pine_tree/scene.gltf', handle_treeceee);
+        loader.load('objects/pine_tree/scene.gltf', handle_treeceeee);
+        loader.load('objects/glb/tree_sheinna1.glb', handle_tree2);
+        loader.load('objects/glb/tree_sheinna1.glb', handle_tree2e);
+        loader.load('objects/glb/tree_sheinna1.glb', handle_tree2ee);
+        loader.load('objects/glb/tree_sheinna1.glb', handle_tree2eee);
+        loader.load('objects/glb/tree_sheinna1.glb', handle_tree2f);
+        loader.load('objects/glb/tree_sheinna1.glb', handle_tree2ef);
+        loader.load('objects/glb/tree_sheinna1.glb', handle_tree2eef);
+        loader.load('objects/glb/tree_sheinna1.glb', handle_tree2eeef);
+        loader.load('objects/glb/tree_sheinna2.glb', handle_tree3);
+        loader.load('objects/glb/tree_sheinna2.glb', handle_tree31);
+        loader.load('objects/glb/tree_sheinna2.glb', handle_tree311);
+        loader.load('objects/glb/tree_sheinna2.glb', handle_tree3111);
+        loader.load('objects/apple_tree/scene.gltf', handle_tree4);
+        loader.load('objects/apple_tree/scene.gltf', handle_tree41);
+        loader.load('objects/apple_tree/scene.gltf', handle_tree411);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree5);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree51);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree511);
+        loader.load('objects/pine_tree/scene.gltf', handle_tree5111);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree6);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree61);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree611);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree6111);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree611e);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree611ee);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree611eee);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree62);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree621);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree6211);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree62111);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree621111);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree62e);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree62ee);
+        loader.load('objects/simple_tree/scene.gltf', handle_tree62eee);
+        loader.load('objects/spruce_tree/scene.gltf', handle_tree7);
+        loader.load('objects/spruce_tree/scene.gltf', handle_tree7e);
+        loader.load('objects/spruce_tree/scene.gltf', handle_tree7ee);
+        loader.load('objects/spruce_tree/scene.gltf', handle_tree7eee);
+        loader.load('objects/spruce_tree2/scene.gltf', handle_tree8);
+        loader.load('objects/spruce_tree2/scene.gltf', handle_tree81);
+        loader.load('objects/spruce_tree2/scene.gltf', handle_tree811);
+        loader.load('objects/spruce_tree2/scene.gltf', handle_tree8111);
+        loader.load('objects/spruce_tree2/scene.gltf', handle_tree81111);
+        loader.load('objects/spruce_tree2/scene.gltf', handle_tree82);
+        loader.load('objects/spruce_tree2/scene.gltf', handle_tree822);
+        loader.load('objects/spruce_tree2/scene.gltf', handle_tree8222);
+        loader.load('objects/spruce_tree2/scene.gltf', handle_tree82222);
+        loader.load('objects/bench/scene.gltf', handle_bench);
+        loader.load('objects/bench/scene.gltf', handle_bench1);
+        loader.load('objects/bench/scene.gltf', handle_bench2);
+        loader.load('objects/bench/scene.gltf', handle_bench22);
+        loader.load('objects/bench/scene.gltf', handle_bench222);
+        loader.load('objects/bench/scene.gltf', handle_bench2222);
+        loader.load('objects/bench/scene.gltf', handle_bench22222);
+        loader.load('objects/rocks/scene.gltf', handle_rocks);
+        loader.load('objects/yulia/traffic.glb', handle_traffic);
+        loader.load('objects/yulia/traffic.glb', handle_traffic1);
+        loader.load('objects/yulia/traffic.glb', handle_traffic2);
+        loader.load('objects/yulia/traffic.glb', handle_traffic3);
+        loader.load('objects/yulia/traffic.glb', handle_traffic4);
+        loader.load('objects/yulia/traffic.glb', handle_traffic5);
+        loader.load('objects/yulia/traffic.glb', handle_traffic6);
+        loader.load('objects/yulia/traffic.glb', handle_traffic7);
+        loader.load('objects/yulia/traffic.glb', handle_traffic8);
+        loader.load('objects/yulia/traffic.glb', handle_traffic9);
+        loader.load('objects/yulia/traffic.glb', handle_traffic10);
+        loader.load('objects/yulia/traffic.glb', handle_traffic11);
+        loader.load('objects/yulia/traffic.glb', handle_traffic111);
+        loader.load('objects/yulia/traffic.glb', handle_traffic1111);
+        loader.load('objects/yulia/traffic.glb', handle_traffic11111);
+        loader.load('objects/yulia/traffic.glb', handle_traffic111111);
+        
+        
+        
+        loader.load('objects/yulia/store.glb', handle_build1);
+        loader.load('objects/yulia/store.glb', handle_build11);
+        loader.load('objects/yulia/store3.glb', handle_build12);
+        loader.load('objects/yulia/store2.glb', handle_build13);
+        loader.load('objects/yulia/building.glb', handle_build2);
+        loader.load('objects/yulia/building.glb', handle_build21);
+        loader.load('objects/yulia/building2.glb', handle_build22);
+        loader.load('objects/yulia/Apartment.glb', handle_build3);
+        loader.load('objects/yulia/Apartment.glb', handle_build31);
+        loader.load('objects/yulia/gedung.glb', handle_build4);
+        loader.load('objects/yulia/gedung.glb', handle_build41);
+        loader.load('objects/yulia/gedung.glb', handle_build411);
+        loader.load('objects/yulia/gedung.glb', handle_build411c);
+        loader.load('objects/yulia/gedung.glb', handle_build4111);
+        loader.load('objects/yulia/gedung.glb', handle_build4111c);
+        loader.load('objects/yulia/GasStation.glb', handle_build5);
+        loader.load('objects/yulia/GasStation2.glb', handle_build51);
+        loader.load('objects/yulia/Apartment2.glb', handle_build6);
+        loader.load('objects/yulia/Apartment2.glb', handle_build61);
+        loader.load('objects/yulia/Apartment4.glb', handle_build8);
+        loader.load('objects/yulia/Apartment4.glb', handle_build8c);
+        loader.load('objects/yulia/Apartment4.glb', handle_build81);
+        loader.load('objects/yulia/town.glb', handle_builda11);
+        loader.load('objects/yulia/town.glb', handle_builda112);
+        loader.load('objects/sheinna/temple.glb', handle_temple);
+        loader.load('objects/sheinna/tower_house.glb', handle_tower_house);
+        loader.load('objects/sheinna/zoo/scene.gltf', handle_zoo);
+        loader.load('objects/sheinna/fence/scene.gltf', handle_fence);
+        loader.load('objects/sheinna/fence/scene.gltf', handle_fence1);
+        loader.load('objects/sheinna/fence/scene.gltf', handle_fence2);
+        loader.load('objects/sheinna/fence/scene.gltf', handle_fence3);
+        loader.load('objects/sheinna/turtle/scene.gltf', handle_turtle);
+        loader.load('objects/sheinna/turtle/scene.gltf', handle_turtle2);
+        loader.load('objects/sheinna/turtle/scene.gltf', handle_turtle3);
+        loader.load('objects/sheinna/turtle/scene.gltf', handle_turtle4);
+        loader.load('objects/sheinna/turtle/scene.gltf', handle_turtle5);
+        loader.load('objects/sheinna/turtle/scene.gltf', handle_turtle6);
+        loader.load('objects/sheinna/turtle/scene.gltf', handle_turtle7);
+        loader.load('objects/sheinna/turtle/scene.gltf', handle_turtle8);
+        loader.load('objects/sheinna/forest_pond/scene.gltf', handle_pond);
+        loader.load('objects/sheinna/mosque/scene.gltf', handle_mosque);
+        loader.load('objects/hospital/hospital.glb', handle_hospital);
+        loader.load('objects/yulia/hotel.glb', handle_builda2);
+        loader.load('objects/yulia/cage.glb', handle_builda3);
+        loader.load('objects/yulia/air.glb', handle_builda4);
+    
+    
+        loader.load('objects/car/car1/scene.gltf', handle_car1);
+        loader.load('objects/car/car1/scene.gltf', handle_car11);
+        loader.load('objects/car/car1/scene.gltf', handle_car111);
+        loader.load('objects/car/car1/scene.gltf', handle_car1a);
+        loader.load('objects/car/car1/scene.gltf', handle_car1aa);
+        loader.load('objects/car/cars.glb', handle_car2);
+        loader.load('objects/car/cars.glb', handle_car21);
+        loader.load('objects/car/cars.glb', handle_car211);
+        loader.load('objects/car/cars.glb', handle_car2a);
+        loader.load('objects/car/cars.glb', handle_car2aa);
+        loader.load('objects/car/pemadam.glb', handle_car3);
+        loader.load('objects/car/offroadcar.glb', handle_car4);
+        loader.load('objects/car/offroadcar.glb', handle_car41);
+        loader.load('objects/car/offroadcar.glb', handle_car4a);
+        loader.load('objects/car/offroadcar.glb', handle_car4aa);
+        loader.load('objects/yulia/bus.glb', handle_bus);
+        loader.load('objects/yulia/bus.glb', handle_bus1);
+        loader.load('objects/yulia/bus.glb', handle_bus11);
+        loader.load('objects/yulia/truk1.glb', handle_truk1);
+        loader.load('objects/yulia/polis.glb', handle_polis);
+        loader.load('objects/yulia/Apartment2.glb', handle_build61_edit);
+        loader.load('objects/yulia/Apartment4.glb', handle_build8_edit);
+        loader.load('objects/yulia/store.glb', handle_build11_edit);
+        loader.load('objects/hospital/hospital.glb', handle_hospital_edit);
+
+        var mesh, bench_mesh, cloud_mesh, rocks_mesh;
+        var car_mesh, car_mesh2, car_mesh3, car_mesh4, car_mesh5, car_mesh6, car_mesh7, car_mesh8;
+
+        
+        //load biasa
+        function handle_load(gltf, x, y, z,sc, mesh) {
+            console.log(gltf);
+            mesh = gltf.scene;
+            console.log(mesh.children[0]);
+            mesh.children[0].material = new THREE.MeshLambertMaterial();
+            mesh.scale.set(sc, sc, sc);    
+            mesh.position.z = z;
+            mesh.position.x = x;
+            mesh.position.y = y;
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            scene.add( mesh );
         }
-        function onDocumentKeyUp(event){
-            document.removeEventListener('keydown',onDocumentKeyDown,false);
+        
+        // ada rotate x, y
+        function handle_load2(gltf, x, y, z,xr, yr, sc, mesh) {
+            console.log(gltf);
+            mesh = gltf.scene;
+            console.log(mesh.children[0]);
+            mesh.children[0].material = new THREE.MeshLambertMaterial();
+            mesh.scale.set(sc, sc, sc);    
+            mesh.position.z = z;
+            mesh.position.x = x;
+            mesh.position.y = y;
+            mesh.rotation.x = xr;
+            mesh.rotation.y = yr;
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            scene.add( mesh );
         }
-        // if (mesh) mesh.rotation.y += 0.01;
-        // if (mesh2) mesh2.rotation.y += 0.01;
-        // if (mesh3) mesh3.rotation.y += 0.01;
-        // if (bench_mesh) bench_mesh.rotation.y += 0.01;
-    	renderer.render(scene, camera);
-    	requestAnimationFrame(render);
+
+        //ada scale x,y,z
+        
+        function handle_load3(gltf, x, y, z,xr, yr,zr ,sca,scb,scc, mesh) {
+            console.log(gltf);
+            mesh = gltf.scene;
+            console.log(mesh.children[0]);
+            mesh.children[0].material = new THREE.MeshLambertMaterial();
+            mesh.scale.set(sca, scb, scc);    
+            mesh.position.z = z;
+            mesh.position.x = x;
+            mesh.position.y = y;
+            mesh.rotation.x = xr;
+            mesh.rotation.y = yr;
+            mesh.rotation.z = zr;
+            mesh.castShadow = true;
+            mesh.receiveShadow = true;
+            scene.add( mesh );
+         }
+    
+
+
+    //add traffic light
+    function handle_traffic(gltf) {
+        handle_load(gltf, -28, 0, -32, 0.007, mesh);
     }
-    </script>
-</body>
-</html>
+    function handle_traffic1(gltf) {
+        handle_load(gltf, -28, 0, -12, 0.007, mesh);
+    }
+    function handle_traffic2(gltf) {
+        handle_load(gltf, -28, 0, 8, 0.007, mesh);
+    }
+    function handle_traffic3(gltf) {
+        handle_load(gltf, -28, 0, 28, 0.007, mesh);
+    }
+    function handle_traffic4(gltf) {
+        handle_load(gltf, -8, 0, -32, 0.007, mesh);
+    }
+    function handle_traffic5(gltf) {
+        handle_load(gltf, -8, 0, -12, 0.007, mesh);
+    }
+    function handle_traffic6(gltf) {
+        handle_load(gltf, -8, 0, 8, 0.007, mesh);
+    }
+    function handle_traffic7(gltf) {
+        handle_load(gltf, -8, 0, 28, 0.007, mesh);
+    }
+    function handle_traffic8(gltf) {
+        handle_load(gltf, 12, 0, -32, 0.007, mesh);
+    }
+    function handle_traffic9(gltf) {
+        handle_load(gltf, 12, 0, -12, 0.007, mesh);
+    }
+    function handle_traffic10(gltf) {
+        handle_load(gltf, 12, 0, 8, 0.007, mesh);
+    }
+    function handle_traffic11(gltf) {
+        handle_load(gltf, 12, 0, 28, 0.007, mesh);
+    }
+    function handle_traffic111(gltf) {
+        handle_load(gltf, 32, 0, -32, 0.007, mesh);
+    }
+    function handle_traffic1111(gltf) {
+        handle_load(gltf, 32, 0, -12, 0.007, mesh);
+    }
+    function handle_traffic11111(gltf) {
+        handle_load(gltf, 32, 0, 8, 0.007, mesh);
+    }
+    function handle_traffic111111(gltf) {
+        handle_load(gltf, 32, 0, 28, 0.007, mesh);
+    }
+
+    function road (x, y, z, ry, scx, scy) {
+            var geometry = new THREE.PlaneGeometry( 6, 20, 0 );
+            var material = new THREE.MeshPhongMaterial( {color: 0x202020, side: THREE.DoubleSide} );
+            var plane2 = new THREE.Mesh( geometry, material );
+            plane2.rotation.x -= Math.PI / 2;
+            plane2.rotation.z  = ry
+            plane2.position.x = x;
+            plane2.position.y= y;
+            plane2.position.z = z;
+            plane2.scale.x = scx;
+            plane2.scale.y = scy;
+            plane2.receiveShadow = true;
+            scene.add( plane2 );
+        }
+        
+        road (-30, 0.08,  0, 0, 0.5, 5);
+        road (-10, 0.08,  0, 0, 0.5, 5);
+        road ( 10, 0.08,  0, 0, 0.5, 5);
+        road ( 30, 0.08,  0, 0, 0.5, 5);
+        road ( -50, 0.08,  0, 0, 0.5, 5);
+        road ( 50, 0.08,  0, 0, 0.5, 5);
+        road ( 0, 0.08, -30, Math.PI / 2, 0.5, 5);
+        road ( 0, 0.08, -10, Math.PI / 2, 0.5, 5);
+        road ( 0, 0.08,  10, Math.PI / 2, 0.5, 5);
+        road ( 0, 0.08,  30, Math.PI / 2, 0.5, 5);
+        road ( 0, 0.08,  -50, Math.PI / 2, 0.5, 5);
+        road ( 0, 0.08,  50, Math.PI / 2, 0.5, 5);
+
+        function ground (x, y, z, sca, scb, scc, a) {
+            var geometry = new THREE.PlaneGeometry( 18, 18, 18 );
+            var material = new THREE.MeshBasicMaterial( {color: a, side: THREE.DoubleSide} );
+            var plane3 = new THREE.Mesh( geometry, material );
+            plane3.rotation.x -= Math.PI / 2;
+            plane3.position.x = x;
+            plane3.position.y= y;
+            plane3.position.z = z;
+            plane3.scale.set(sca,scb,scc);
+            scene.add( plane3 );
+        }
+
+        ground(-40,  0.1, -40, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground(-40,  0.1, -20, 0.85, 0.85, 0.85, 0x2949494 );
+        ground(-40,  0.1,   0, 0.85, 0.85, 0.85, 0x2949494 );
+        ground(-40,  0.1,  20, 0.85, 0.85, 0.85, 0xE6D66C );
+        ground(-40,  0.1,  40, 0.85, 0.85, 0.85, 0x0bc9d6 );
+        ground(-20,  0.1, -40, 0.85, 0.85, 0.85, 0x949494 );
+        ground(-20,  0.1, -20, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground(-20,  0.1,   0, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground(-20,  0.1,  20, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground(-20,  0.1,  40, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground(  0,  0.1, -40, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground(  0,  0.1, -20, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground(  0,  0.1,   0, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground(  0,  0.1,  20, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground(  0,  0.1,  40, 0.85, 0.85, 0.85, 0x8A6A29 );
+        ground( 20,  0.1, -40, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground( 20,  0.1, -20, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground( 20,  0.1,   0, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground( 20,  0.1,  20, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground( 20,  0.1,  40, 0.85, 0.85, 0.85, 0x2949494);
+        ground( 40,  0.1, -40, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground( 40,  0.1, -20, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground( 40,  0.1,   0, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground( 40,  0.1,  20, 0.85, 0.85, 0.85, 0x2a6002 );
+        ground( 40,  0.1,  40, 0.85, 0.85, 0.85, 0x2a6002 );
+        
+        // Car animation
+        //mobil biru
+        function handle_car1(gltf) {
+            console.log(gltf);
+            car_mesh = gltf.scene;
+            console.log(car_mesh.children[0]);
+            car_mesh.children[0].material = new THREE.MeshLambertMaterial();
+            car_mesh.scale.set(0.8, 0.8, 0.8);    
+            car_mesh.position.z = -8;
+            car_mesh.position.x = 10;
+            car_mesh.position.y = 0;
+            car_mesh.rotation.x = 0;
+            car_mesh.rotation.y = 0;
+            car_mesh.castShadow = true;
+            car_mesh.receiveShadow = true;
+            scene.add( car_mesh );
+        }
+        //ambulance
+        function handle_car2(gltf) {
+            console.log(gltf);
+            car_mesh2 = gltf.scene;
+            console.log(car_mesh2.children[0]);
+            car_mesh2.children[0].material = new THREE.MeshLambertMaterial();
+            car_mesh2.scale.set(0.5, 0.5, 0.5);
+            car_mesh2.position.z = 48;
+            car_mesh2.position.x = -11;
+            car_mesh2.position.y = -1;
+            car_mesh2.rotation.x = 0;
+            car_mesh2.rotation.y = 0;
+            car_mesh2.castShadow = true;
+            car_mesh2.receiveShadow = true;
+            scene.add( car_mesh2 );
+        }
+        //pemadam
+        function handle_car3(gltf) {
+            console.log(gltf);
+            car_mesh3 = gltf.scene;
+            console.log(car_mesh3.children[0]);
+            car_mesh3.children[0].material = new THREE.MeshLambertMaterial();
+            car_mesh3.scale.set(0.5, 0.5, 0.5);
+            car_mesh3.position.z = 20;
+            car_mesh3.position.x = -26.5;
+            car_mesh3.position.y = -1;
+            car_mesh3.rotation.x = 0;
+            car_mesh3.rotation.y = 0;
+            car_mesh3.castShadow = true;
+            car_mesh3.receiveShadow = true;
+            scene.add( car_mesh3 );
+        }
+        //offroad
+        function handle_car4(gltf) {
+            console.log(gltf);
+            car_mesh4 = gltf.scene;
+            console.log(car_mesh4.children[0]);
+            car_mesh4.children[0].material = new THREE.MeshLambertMaterial();
+            car_mesh4.scale.set(0.005, 0.005, 0.005);
+            car_mesh4.position.z = -10;
+            car_mesh4.position.x = -18;
+            car_mesh4.position.y = 0.5;
+            car_mesh4.rotation.x = 0;
+            car_mesh4.rotation.y = Math.PI;
+            car_mesh4.castShadow = true;
+            car_mesh4.receiveShadow = true;
+            scene.add( car_mesh4 );
+        }
+
+        //offroad
+        function handle_car41(gltf) {
+            console.log(gltf);
+            car_mesh5 = gltf.scene;
+            console.log(car_mesh5.children[0]);
+            car_mesh5.children[0].material = new THREE.MeshLambertMaterial();
+            car_mesh5.scale.set(0.005, 0.005, 0.005);
+            car_mesh5.position.z = 50;
+            car_mesh5.position.x = -18;
+            car_mesh5.position.y = 0.5;
+            car_mesh5.rotation.x = 0;
+            car_mesh5.rotation.y = 0;
+            car_mesh5.castShadow = true;
+            car_mesh5.receiveShadow = true;
+            scene.add( car_mesh5 );
+        }
+        function handle_bus(gltf) {
+            console.log(gltf);
+            car_mesh6 = gltf.scene;
+            console.log(car_mesh6.children[0]);
+            car_mesh6.children[0].material = new THREE.MeshLambertMaterial();
+            car_mesh6.scale.set(98, 98, 98);
+            car_mesh6.position.x = 20;
+            car_mesh6.position.y = 27;
+            car_mesh6.position.z = -12;
+            car_mesh6.rotation.x = 0;
+            car_mesh6.rotation.y = 0;
+            car_mesh6.castShadow = true;
+            car_mesh6.receiveShadow = true;
+            scene.add( car_mesh6 );
+        }
+        function handle_truk1(gltf) {
+            console.log(gltf);
+            car_mesh7 = gltf.scene;
+            console.log(car_mesh7.children[0]);
+            car_mesh7.children[0].material = new THREE.MeshLambertMaterial();
+            car_mesh7.scale.set(98, 98, 98);
+            car_mesh7.position.x = 0;
+            car_mesh7.position.y = 27.2;
+            car_mesh7.position.z = -32;
+            car_mesh7.rotation.x = 0;
+            car_mesh7.rotation.y = 0;
+            car_mesh7.castShadow = true;
+            car_mesh7.receiveShadow = true;
+            scene.add( car_mesh7 );
+        }
+
+        function handle_polis(gltf) {
+            console.log(gltf);
+            car_mesh8 = gltf.scene;
+            console.log(car_mesh8.children[0]);
+            car_mesh8.children[0].material = new THREE.MeshLambertMaterial();
+            car_mesh8.scale.set(0.008, 0.008, 0.008);
+            car_mesh8.position.x = -26.5;
+            car_mesh8.position.y = -1.6;
+            car_mesh8.position.z = -30;
+            car_mesh8.rotation.x = 0;
+            car_mesh8.rotation.y = Math.PI/2;
+            car_mesh8.castShadow = true;
+            car_mesh8.receiveShadow = true;
+            scene.add( car_mesh8 );
+        }
+
+
+        //komplek 1a
+        function handle_build6(gltf) {
+            handle_load2(gltf, -45, 0.2, -45, 0, 1.6, 0.00007, mesh);
+        }
+        function handle_build8(gltf) {
+            handle_load2(gltf, -37.5, 0.2, -45, 0, 1.6, 0.00007, mesh);
+        }
+        function handle_build411(gltf) {
+            handle_load(gltf, -45, -0.3, -38, 0.015, mesh);
+        }
+        function handle_build4111(gltf) {
+            handle_load3(gltf, -42, -1, -38, 0, 0, 0, 0.015, 0.010, 0.015, mesh);
+        }
+        function handle_tree(gltf) {
+            handle_load(gltf, -32.5, -0.3, -46, 0.7, mesh);
+        }
+        function handle_tree1(gltf) {
+            handle_load(gltf, -32.5, -0.3, -42, 0.7, mesh);
+        }
+        function handle_tree11(gltf) {
+            handle_load(gltf, -32.5, -0.3, -38, 0.7, mesh);
+        }
+        function handle_tree111(gltf) {
+            handle_load(gltf, -32.5, -0.3, -34, 0.7, mesh);
+        }
+        function handle_tree1111(gltf) {
+            handle_load(gltf, -36.5, -0.3, -34, 0.7, mesh);
+        }
+        function handle_tree11111(gltf) {
+            handle_load(gltf, -40.5, -0.3, -34, 0.7, mesh);
+        }
+        function handle_tree111111(gltf) {
+            handle_load(gltf, -44.5, -0.3, -34, 0.7, mesh);
+        }
+        function handle_tree1111111(gltf) {
+            handle_load(gltf, -48, -0.3, -34, 0.7, mesh);
+        }
+
+    //komplek 1b
+        function handle_builda11(gltf) {
+            handle_load3(gltf, -38, 0, -30, 0, 1.58, 0, 0.005, 0.006, 0.004, mesh);
+        }
+
+    // Komplek 1c
+        function handle_build51(gltf) {
+            handle_load2(gltf,-43 , 0, 0, 0, Math.PI, 0.005, mesh);
+        }
+        function handle_bus1(gltf) {
+            handle_load3(gltf, -55, 27, -38, 0, 0, 0, 98, 98, 98, mesh);
+        }
+        function handle_bus11(gltf) {
+            handle_load3(gltf, -55, 27, -41, 0, 0, 0, 98, 98, 98, mesh);
+        }
+        function handle_tree6111(gltf) {
+            handle_load2(gltf, -45, +0, 5, 0, Math.PI, 0.5, mesh);
+        }
+    
+    // Komplek 1d
+    function handle_tree2(gltf) {
+            handle_load(gltf, -46.5, 0, 34-20, 1, mesh);
+        }
+        function handle_tree2e(gltf) {
+            handle_load(gltf, -46.5, 0, 38-20, 1, mesh);
+        }
+        function handle_tree2ee(gltf) {
+            handle_load(gltf, -46.5, 0, 42-20, 1, mesh);
+        }
+        function handle_tree2eee(gltf) {
+            handle_load(gltf, -46.5, 0, 46-20, 1, mesh);
+        }
+        function handle_tree2f(gltf) {
+            handle_load(gltf, -34.5, 0, 34-20, 1, mesh);
+        }
+        function handle_tree2ef(gltf) {
+            handle_load(gltf, -34.5, 0, 38-20, 1, mesh);
+        }
+        function handle_tree2eef(gltf) {
+            handle_load(gltf, -34.5, 0, 42-20, 1, mesh);
+        }
+        function handle_tree2eeef(gltf) {
+            handle_load(gltf, -34.5, 0, 46-20, 1, mesh);
+        }
+        function handle_zoo(gltf) {
+            handle_load2(gltf, -40, +0, 40-20, 0, 3 * Math.PI/2, 0.13, mesh);
+        }
+        function handle_fence(gltf) {
+            handle_load2(gltf, -17.5, -1, 101-20, 0, 0, 0.3, mesh);
+        }
+        function handle_fence1(gltf) {
+            handle_load2(gltf, -17.5, -1, 86.7-20, 0, 0, 0.3, mesh);
+        }
+        function handle_fence2(gltf) {
+            handle_load2(gltf, 21, -1, 17.2-20, 0, Math.PI/2, 0.3, mesh);
+        }
+        function handle_fence3(gltf) {
+            handle_load2(gltf, 6.2, -1, 17.2-20, 0, Math.PI/2, 0.3, mesh);
+        }
+    // Komplek 1e
+        function handle_turtle(gltf) {
+            handle_load2(gltf, -36, 0.5, 42, 0, 10.6, 0.2, mesh);
+        }
+        function handle_turtle2(gltf) {
+            handle_load2(gltf, -36, 0.5, 44, 0, 10.6, 0.2, mesh);
+        }
+        function handle_turtle3(gltf) {
+            handle_load2(gltf, -37.3, 0.5, 43, 0, 1.6, 0.2, mesh);
+        }
+        function handle_turtle4(gltf) {
+            handle_load2(gltf, -38, 0.5, 40, 0, 1.6, 0.1, mesh);
+        }
+        function handle_turtle5(gltf) {
+            handle_load2(gltf, -37.5, 0.5, 45, 0, 10.6, 0.1, mesh);
+        }
+        function handle_turtle6(gltf) {
+            handle_load2(gltf, -38.3, 0.5, 42, 0, 10.6, 0.1, mesh);
+        }
+        function handle_turtle7(gltf) {
+            handle_load2(gltf, -37.3, 0.5, 41.5, 0, 10.6, 0.1, mesh);
+        }
+        function handle_turtle8(gltf) {
+            handle_load2(gltf, -36.5, 0.5, 40, 0, 10.6, 0.2, mesh);
+        }
+        function handle_pond(gltf) {
+            handle_load2(gltf, -42.6, -16, 46, 0, 0, 0.7, mesh);
+        }
+
+    // komplek 2a
+        //store
+        function handle_build1(gltf) {
+            handle_load2(gltf, -24, +0.2, -36, 0, -Math.PI/2, 0.22, mesh);
+        }
+        //gedung pink
+        function handle_build2(gltf) {
+            handle_load3(gltf, -16, 0, -36, 0, 1.6, 0, 3, 2, 3.5, mesh);
+        }
+        //apartement
+        function handle_build3(gltf) {
+            handle_load2(gltf, -16, 0.2, -44, 0, Math.PI/2 , 0.00007, mesh);
+        }
+        function handle_build31(gltf) {
+            handle_load2(gltf, -24, 0.2, -44, 0, -Math.PI/2, 0.00007, mesh);
+        }
+
+    // Komplek 2b
+        function handle_tree5(gltf) {
+            handle_load(gltf, -27, +0, -14, 0.7, mesh);
+        }
+        function handle_tree51(gltf) {
+            handle_load(gltf, -27, +0, -18, 0.7, mesh);
+        }
+        function handle_tree511(gltf) {
+            handle_load(gltf, -27, +0, -22, 0.7, mesh);
+        }
+        function handle_tree5111(gltf) {
+            handle_load(gltf, -27, +0, -26, 0.7, mesh);
+        }
+        function handle_tree611(gltf) {
+            handle_load2(gltf, -13, +0, -16,0, Math.PI, 0.5, mesh);
+        }
+        //gedung kecil
+        function handle_build4(gltf) {
+            handle_load(gltf, -24, -0.3, -14, 0.015, mesh);
+        }
+        //gedung pink 2
+        function handle_build21(gltf) {
+            handle_load2(gltf, -20, 0, -15, 0, 1.6, 2, mesh);
+        }
+
+    // Komplek 2c
+        function handle_tree6(gltf) {
+            handle_load(gltf, -25, +0, -5, 0.3, mesh);
+        }
+        function handle_tree62(gltf) {
+            handle_load(gltf, -20, +0, -5, 0.3, mesh);
+        }
+        function handle_tree621(gltf) {
+            handle_load(gltf, -15, +0, -5, 0.3, mesh);
+        }
+        function handle_tree6211(gltf) {
+            handle_load(gltf, -25, +0, 5, 0.3, mesh);
+        }
+        function handle_tree62111(gltf) {
+            handle_load(gltf, -20, +0, 5, 0.3, mesh);
+        }
+        function handle_tree621111(gltf) {
+            handle_load(gltf, -15, +0, 5, 0.3, mesh);
+        }
+        function handle_bench(gltf) {
+            handle_load(gltf, -24, +0.5, -2, 1, bench_mesh);
+        }
+        function handle_bench2(gltf) {
+            handle_load(gltf, -20, +0.5, -2, 1, bench_mesh);
+        }
+        function handle_bench22(gltf) {
+            handle_load2(gltf, -24, +0.5, 2, 0, Math.PI, 1, bench_mesh);
+        }
+        function handle_bench222(gltf) {
+            handle_load2(gltf, -20, +0.5, 2, 0, Math.PI, 1, bench_mesh);
+        }
+        function handle_bench2222(gltf) {
+            handle_load(gltf, -16, +0.5, -2, 1, bench_mesh);
+        }
+        function handle_bench22222(gltf) {
+            handle_load2(gltf, -16, +0.5, 2, 0, Math.PI, 1, bench_mesh);
+        }
+        function handle_rocks(gltf) {
+            handle_load(gltf, -20, +0, 0, 1, rocks_mesh);
+        }
+    // Komplek 2d
+        function handle_builda2(gltf) {
+            handle_load3(gltf, -20, -0.15, 28, Math.PI/11.4,Math.PI, Math.PI/6.8, 50, 50, 50, mesh);
+        }
+        function handle_tree411(gltf) {
+            handle_load(gltf, -35, 0, 28, 1.5, mesh);
+        }
+        ground( -20,  0.35,  18, 0.7, 0.4, 0.4, 0x0FB3EF );
+        ground( -20,  0.3,  18, 0.8, 0.5, 0.4, 0x2949494 );
+
+    // Komplek 2e
+        function handle_build13(gltf) {
+            handle_load3(gltf, -20, 0.3, 40, 0, -Math.PI/2, 0, 0.25, 0.35, 0.25, mesh);
+        }
+        ground( -20,  0.2,  40, 0.6, 0.6, 0.1, 0x2F4F4F );
+            
+        function handle_tree62e(gltf) {
+            handle_load(gltf, -25, +0, 35, 0.3, mesh);
+        }
+        function handle_tree62ee(gltf) {
+            handle_load(gltf, -20, +0, 35, 0.3, mesh);
+        }
+        function handle_tree62eee(gltf) {
+            handle_load(gltf, -15, +0, 35, 0.3, mesh);
+        }
+        function handle_treece(gltf) {
+            handle_load(gltf, -26, -0.3, 40, 0.7, mesh);
+        }
+        function handle_treecee(gltf) {
+            handle_load(gltf, -26, -0.3, 45, 0.7, mesh);
+        }
+        function handle_treeceee(gltf) {
+            handle_load(gltf, -14, -0.3, 40, 0.7, mesh);
+        }
+        function handle_treeceeee(gltf) {
+            handle_load(gltf, -14, -0.3, 45, 0.7, mesh);
+        }
+
+    // Komplek 3a
+        function handle_build8_edit(gltf) {
+            handle_load2(gltf, 0, 0.2, -40, 0, 1.6, 0.0001, mesh);
+        }
+
+
+    // komplek 3b
+        //gas station
+        function handle_build5(gltf) {
+            handle_load2(gltf, 0, 0, -21, 0, 4.72, 0.005, mesh);
+        }
+        function handle_car111(gltf) {
+            handle_load2(gltf, -5, -0.1, -23, 0, 0,  0.8, mesh);
+        }
+        function handle_tree4(gltf) {
+            handle_load(gltf, -22, +0, -20, 2, mesh);
+        }
+        function handle_build22(gltf) {
+            handle_load2(gltf, 4, 0, -15, 0, -Math.PI/2,  0.025, mesh);
+        }
+        function handle_build12(gltf) {
+            handle_load3(gltf, -3, 0.01, -15, 0, -Math.PI/2, 0, 0.25, 0.35, 0.25, mesh);
+        }
+        function handle_bench1(gltf) {
+            handle_load2(gltf, 5, +0.5, -25, 0, Math.PI, 1, bench_mesh);
+        }
+
+
+    // Komplek 3c
+        function handle_tree8(gltf) {
+            handle_load(gltf, -2, +0, -5, 2, mesh);
+        }
+        function handle_tree811(gltf) {
+            handle_load(gltf, -5, +0, -5, 2, mesh);
+        }
+        function handle_tree8111(gltf) {
+            handle_load(gltf, 2, +0, -5, 2, mesh);
+        }
+        function handle_tree81111(gltf) {
+            handle_load(gltf, 5, +0, -5, 2, mesh);
+        }
+        function handle_tree82(gltf) {
+            handle_load(gltf, -5, +0, 0, 2, mesh);
+        }
+        function handle_tree822(gltf) {
+            handle_load(gltf, -5, +0, 5, 2, mesh);
+        }
+        function handle_tree8222(gltf) {
+            handle_load(gltf, 5, +0, 0, 2, mesh);
+        }
+        function handle_tree82222(gltf) {
+            handle_load(gltf, 5, +0, 5, 2, mesh);
+        }
+        //temple
+        function handle_temple(gltf) {
+            handle_load(gltf, 0, 0, 2, 0.2, mesh);
+        } 
+        
+    // Komplek 3d
+        function handle_hospital(gltf){
+            handle_load2(gltf, -2, 5, 20, 0, 0, 0.2, mesh);
+        }
+        function handle_car21(gltf) {
+            handle_load(gltf, 2, -1.3, 25, 0.5, mesh);
+        }
+        function handle_car211(gltf) {
+            handle_load(gltf, 4, -1.3, 25, 0.5, mesh);
+        }
+        function handle_tree611ee(gltf) {
+            handle_load(gltf, 6, +0, 14, 0.5, mesh);
+        }
+        function handle_tree611eee(gltf) {
+            handle_load(gltf, 4, -5, 16, 0.5, mesh);
+        }
+
+    // Komplek 3e
+        function handle_builda3(gltf) {
+            handle_load2(gltf, 7.4, 1, 12, -0.045, 0, 120, mesh);
+        }
+        ground(  0,  0.2,  42, 0.7, 0.5, 0.4, 0x2a6002 );
+
+        function handle_tree7e(gltf) {
+            handle_load(gltf, -4, +0, 36.4, 0.5, mesh);
+        } 
+        function handle_tree7ee(gltf) {
+            handle_load(gltf, 0, +0, 36.4, 0.5, mesh);
+        } 
+        function handle_tree7eee(gltf) {
+            handle_load(gltf, 4, +0, 36.4, 0.5, mesh);
+        } 
+
+    // Komplek 4a
+        function handle_build11_edit(gltf) {
+            handle_load2(gltf, 20, 0, -40, 0, Math.PI/2, 0.42, mesh);
+        }
+    // Komplek 4b
+        function handle_build61_edit(gltf) {
+            handle_load2(gltf, 20, 0.3, -20, 0, Math.PI, 0.0001, mesh);
+        }
+    // Komplek 4c
+    function handle_builda4(gltf) {
+            handle_load(gltf, 24, 0, -3, 0.017, mesh);
+        }
+        function handle_tree3(gltf) {
+            handle_load(gltf, 15, +0, 5, 1, mesh);
+        }
+        function handle_tree31(gltf) {
+            handle_load(gltf, 15, +0, -5, 1, mesh);
+        }
+        function handle_tree311(gltf) {
+            handle_load(gltf, 25, +0, 5, 1, mesh);
+        }
+        function handle_tree3111(gltf) {
+            handle_load(gltf, 25, +0, -5, 1, mesh);
+        }
+
+    // Komplek 4d
+        function handle_build81(gltf) {
+            handle_load2(gltf, 25, 0.3, 15, 0, 0, 0.00006, mesh);
+        }
+        function handle_build11(gltf) {
+            handle_load2(gltf, 18, 0, 15, 0, Math.PI/2, 0.22, mesh);
+        }
+        function handle_car11(gltf) {
+            handle_load2(gltf, 14, -0.3, 14, 0, 0,  1, mesh);
+        }
+        function handle_tree61(gltf) {
+            handle_load(gltf, 12, +0, 12, 0.5, mesh);
+        }
+        function handle_build61(gltf) {
+            handle_load2(gltf, 17, 0.3, 21, 0, Math.PI, 0.00007, mesh);
+        }
+        function handle_build41(gltf) {
+            handle_load(gltf, 26, -0.3, 22, 0.015, mesh);
+        }
+        function handle_tree81(gltf) {
+            handle_load(gltf, 21.5, +0, 23, 3, mesh);
+        }
+
+
+    // Komplek 4e
+        function handle_builda112(gltf) {
+            handle_load3(gltf, 30, 0, 42, 0, 0, 0, 0.005, 0.006, 0.004, mesh);
+        }
+        function handle_tree611e(gltf) {
+            handle_load2(gltf, 35-13, +0, 58-16,0, Math.PI, 0.4, mesh);
+        }
+        
+
+    // Komplek 5a
+        function handle_tower_house(gltf) {
+            handle_load(gltf, 40, 0, -40, 0.7, mesh);
+        } 
+        function handle_car2a(gltf) {
+            handle_load(gltf, 35, -1, -40, 0.5, mesh);
+        }
+        function handle_car2aa(gltf) {
+            handle_load(gltf, 37, -1, -40, 0.5, mesh);
+        }
+        function handle_car1a(gltf) {
+            handle_load2(gltf, 33.8, 0, -35, 0, 0,  0.8, mesh);
+        }
+        function handle_car1aa(gltf) {
+            handle_load2(gltf, 35.8, 0, -35, 0, 0,  0.8, mesh);
+        }
+        function handle_car4a(gltf) {
+            handle_load2(gltf, 34, 0.5, -45, 0, Math.PI/2,  0.005, mesh);
+        }
+        function handle_car4aa(gltf) {
+            handle_load2(gltf, 36, 0.5, -45, 0, Math.PI/2,  0.005, mesh);
+        }
+    // Komplek 5b
+        function handle_hospital_edit(gltf){
+            handle_load2(gltf, 40, 5, -20, 0, 0, 0.2, mesh);
+        }
+        function handle_tree7(gltf) {
+            handle_load(gltf, 35, +0, -15, 0.7, mesh);
+        } 
+    // Komplek 5c
+        function handle_build3(gltf) {
+                handle_load2(gltf, 40, 0.2, 0, 0, Math.PI/2 , 0.0001, mesh);
+        }
+    // Komplek 5d
+        function handle_mosque(gltf) {
+            handle_load2(gltf, 39.5, 0.5, 20, 0, 0, 0.2, mesh);
+        }
+    // Komplek 5e
+        function handle_tree41(gltf) {
+            handle_load(gltf, 30, +0, 45, 1, mesh);
+        }
+        function handle_build8c(gltf) {
+            handle_load2(gltf, 80-39, 0.2, 38, 0, 0, 0.00007, mesh);
+        }
+        function handle_build411c(gltf) {
+            handle_load(gltf, 80-45, -0.3, 40, 0.015, mesh);
+        }
+        function handle_build4111c(gltf) {
+            handle_load3(gltf, 80-45, -1, 36, 0, 0, 0.015, 0, 0.010, 0.015, mesh);
+        }
+        function handle_treec(gltf) {
+            handle_load(gltf, 80-32.5, -0.3, 34, 0.7, mesh);
+        }
+        function handle_tree1c(gltf) {
+            handle_load(gltf, 80-32.5, -0.3, 38, 0.7, mesh);
+        }
+        function handle_tree11c(gltf) {
+            handle_load(gltf, 80-32.5, -0.3, 42, 0.7, mesh);
+        }
+        function handle_tree111c(gltf) {
+            handle_load(gltf, 80-32.5, -0.3, 46, 0.7, mesh);
+        }
+        function handle_tree1111c(gltf) {
+            handle_load(gltf, 80-36.5, -0.3, 46, 0.7, mesh);
+        }
+        function handle_tree11111c(gltf) {
+            handle_load(gltf, 80-40.5, -0.3, 46, 0.7, mesh);
+        }
+        function handle_tree111111c(gltf) {
+            handle_load(gltf, 80-44.5, -0.3, 46, 0.7, mesh);
+        }
+
+        // var mouse = {x:0,y:0};
+        var cameraMoves = {x:0,y:0,z:-0.1,move:false,speed:0.2};
+
+
+        //RENDER LOOP
+        render();
+
+        // function mouseMove(e){
+        //     if (e.clientX>mouse.x) { camera.position.x += cameraMoves.speed; } else { camera.position.x += -cameraMoves.speed; }
+        //     if (e.clientY>mouse.y) { camera.position.y += -cameraMoves.speed; } else { camera.position.y += cameraMoves.speed; }
+
+        //     mouse.x = e.clientX;
+        //     mouse.y = e.clientY;
+        // }
+        // window.addEventListener('mousemove', mouseMove);
+
+        var delta = 0;
+        var prevTime = Date.now();
+        var mundur = 0, mundur2 = 0, mundur3 = 0, mundur4 = 0, mundur5 = 1, mundur6 = 1, mundur7 = 0 ,  mundur8= 0;
+        function render() {
+            posx = camera.position.x;
+            document.getElementById("posx").innerHTML = posx;
+            posy = camera.position.y;
+            document.getElementById("posy").innerHTML = posy;
+            posz = camera.position.z;
+            document.getElementById("posz").innerHTML = posz;
+            var delta = 0.01;
+            var yawMove = 0.001;
+            document.addEventListener('keydown',onDocumentKeyDown,false);
+            function onDocumentKeyDown(event){
+                event = event || window.event;
+                var keycode = event.keyCode;
+                switch(keycode){
+                    // Case MOVE
+                    case 65 : //A Left
+                        camera.position.x = camera.position.x - delta;
+                        document.getElementById("nav").src = "objects/nav/navleft.png";
+                        break;
+                    case 87 : //W Up
+                        camera.position.z = camera.position.z - delta;
+                        document.getElementById("nav").src = "objects/nav/navup.png";
+                        break;
+                    case 68 : //D Right
+                        camera.position.x = camera.position.x + delta;
+                        document.getElementById("nav").src = "objects/nav/navright.png";
+                        break;
+                    case 83 : //S Down
+                        camera.position.z = camera.position.z + delta;
+                        document.getElementById("nav").src = "objects/nav/navdown.png";
+                        break;
+                    case 82 : //R Far
+                        camera.position.y = camera.position.y + delta;
+                        document.getElementById("nav2").src = "objects/nav/flyup.png";
+                        break;
+                    case 70 : //F Near 
+                        camera.position.y = camera.position.y - delta;
+                        document.getElementById("nav2").src = "objects/nav/flydown.png";
+                        break;
+                    // Case YAW
+                    case 37 : //arrowLeft
+                        camera.rotation.y = camera.rotation.y + (Math.PI * yawMove);
+                        break;
+                    case 39 : //arrowRight
+                        camera.rotation.y = camera.rotation.y - (Math.PI * yawMove);
+                        break;
+                    // Case PITCH
+                    case 38 : //arrowUp
+                        camera.rotation.x = camera.rotation.x + (Math.PI * yawMove);
+                        break;
+                    case 40 : //arrowDown
+                        camera.rotation.x = camera.rotation.x - (Math.PI * yawMove);
+                        break;
+                }
+                document.addEventListener('keyup',onDocumentKeyUp,false);
+                music.play();
+            }
+            function onDocumentKeyUp(event){
+                document.removeEventListener('keydown',onDocumentKeyDown,false);
+            }
+            if(car_mesh) {
+                if(car_mesh.position.z <= plane.position.z - 48) {
+                    car_mesh.rotation.y = Math.PI;
+                    mundur = 0;
+                }
+                if(car_mesh.position.z >= plane.position.z + 48) {
+                    car_mesh.rotation.y = Math.PI;
+                    mundur = 1;
+                }
+                if(mundur == 0) car_mesh.position.z += 0.2; 
+                else car_mesh.position.z -= 0.2;
+            }
+            if(car_mesh2) {
+                if(car_mesh2.position.z <= plane.position.z - 48) {
+                    car_mesh2.rotation.y = 0;
+                    car_mesh2.position.x = -8.5;
+                    mundur2 = 0;
+                }
+                if(car_mesh2.position.z >= plane.position.z + 48) {
+                    car_mesh2.rotation.y = Math.PI;
+                    car_mesh2.position.x = -11;
+                    mundur2 = 1;
+                }
+                if(mundur2 == 0) car_mesh2.position.z += 0.3; 
+                else car_mesh2.position.z -= 0.3;
+            }
+            if(car_mesh3) {
+                if(car_mesh3.position.z <= plane.position.z - 48) {
+                    car_mesh3.rotation.y = 0;
+                    car_mesh3.position.x = -26.5;
+                    mundur3 = 0;
+                }
+                if(car_mesh3.position.z >= plane.position.z + 48) {
+                    car_mesh3.rotation.y = Math.PI;
+                    car_mesh3.position.x = -33.5;
+                    mundur3 = 1;
+                }
+                if(mundur3 == 0) car_mesh3.position.z += 0.3; 
+                else car_mesh3.position.z -= 0.3;
+            }
+            if(car_mesh4) {
+                if(car_mesh4.position.x <= plane.position.x - 48) {
+                    car_mesh4.rotation.y = Math.PI;
+                    mundur4 = 0;
+                }
+                if(car_mesh4.position.x >= plane.position.x + 48) {
+                    car_mesh4.rotation.y = 0;
+                    mundur4 = 1;
+                }
+                if(mundur4 == 0) car_mesh4.position.x += 0.2; 
+                else car_mesh4.position.x -= 0.2;
+            }
+            if(car_mesh5) {
+                if(car_mesh5.position.x <= plane.position.x - 48) {
+                    car_mesh5.rotation.y = Math.PI;
+                    mundur5 = 0;
+                }
+                if(car_mesh5.position.x >= plane.position.x + 48) {
+                    car_mesh5.rotation.y = 0;
+                    mundur5 = 1;
+                }
+                if(mundur5 == 0) car_mesh5.position.x += 0.2; 
+                else car_mesh5.position.x -= 0.2;
+            }
+
+            if(car_mesh6) {
+                if(car_mesh6.position.x <= plane.position.x - 65) {
+                    car_mesh6.position.y = -1000;
+                    mundur6 = 0;
+                }
+                if(car_mesh6.position.x >= plane.position.x +20) {
+                    car_mesh6.position.y = 27;
+                    mundur6 = 1;
+                }
+                if(mundur6 == 0) car_mesh6.position.x += 10; 
+                else car_mesh6.position.x -= 0.2;
+            }
+
+            if(car_mesh7) {
+                if(car_mesh7.position.x <= plane.position.x - 60) {
+                    car_mesh7.position.y = 27.2;
+                    mundur7 = 0;
+                }
+                if(car_mesh7.position.x >= plane.position.x + 28) {
+                    car_mesh7.position.y = -1000;
+                    mundur7 = 1;
+                }
+                if(mundur7 == 0) car_mesh7.position.x += 0.2; 
+                else car_mesh7.position.x -= 10;
+            }
+
+            if(car_mesh8) {
+                if(car_mesh8.position.x <= plane.position.x - 48) {
+                    car_mesh8.position.y = -1.6;
+                    mundur8 = 0;
+                }
+                if(car_mesh8.position.x >= plane.position.x + 48) {
+                    car_mesh8.position.y = -1000;
+                    mundur8 = 1;
+                }
+                if(mundur8 == 0) car_mesh8.position.x += 0.2; 
+                else car_mesh8.position.x -= 10;
+            }
+            // background
+            const canvasAspect = myCanvas.clientWidth / myCanvas.clientHeight;
+            const imageAspect = bgTexture.image ? bgTexture.image.width / bgTexture.image.height : 1;
+            const aspect = imageAspect / canvasAspect;
+            bgTexture.offset.x = aspect > 1 ? (1 - 1 / aspect) / 2 : 0;
+            bgTexture.repeat.x = aspect > 1 ? 1 / aspect : 1;
+            bgTexture.offset.y = aspect > 1 ? 0 : (1 - aspect) / 2;
+            bgTexture.repeat.y = aspect > 1 ? 1 : aspect;
+
+
+            renderer.render(scene, camera);
+            requestAnimationFrame(render);
+        }
+        </script>
+    </body>
+    </html>
